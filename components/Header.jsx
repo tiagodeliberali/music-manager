@@ -2,42 +2,65 @@ import React, { PropTypes, Component } from 'react';
 import TodoTextInput from './TodoTextInput';
 
 import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
+import { AppBar, IconButton, Toolbar, Button, Input } from 'material-ui';
 
-const defaultStyle = {
-  marginLeft: 20
+import { LibraryMusic, Add } from 'material-ui-icons';
+
+import theme from '../src/material_ui_raw_theme_file'
+
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+  flex: {
+    flex: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+  button: {
+    marginLeft: 20,
+  },
+  input: {
+    width: 600
+  }
 };
 
-class Header extends Component {
-  handleSave(text) {
-    if (text.length !== 0) {
-      this.props.addTodo(text);
-    }
-  }
-
-  render() {
-    return (
-      <header className="header">
+function Header(props) {
+  const { classes } = props;
+  return (
+    <header className="header">
       <AppBar position="static" color="default">
-          <Toolbar>
-            <Typography variant="title" color="inherit">
-              Músicas do Louvor
-            </Typography>
-          </Toolbar>
-        </AppBar>
-          <h1 style={defaultStyle} >todos</h1>
-          <TodoTextInput newTodo
-                         onSave={this.handleSave.bind(this)}
-                         placeholder="What needs to be done?" />
-      </header>
-    );
-  }
+        <Toolbar>
+          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <LibraryMusic />
+          </IconButton>
+          <Input
+            placeholder="Buscar música"
+            className={classes.input}
+            inputProps={{
+              'aria-label': 'Description',
+            }}
+          />
+          <Button className={classes.button}
+                  variant="fab"
+                  mini 
+                  aria-owns={open ? 'menu-appbar' : null}
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  <Add />
+                </Button>
+        </Toolbar>
+      </AppBar>
+    </header>
+  );
 }
 
 Header.propTypes = {
-  addTodo: PropTypes.func.isRequired
+  addTodo: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
-export default Header;
+export default withStyles(styles)(Header);

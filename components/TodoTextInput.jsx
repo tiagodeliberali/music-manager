@@ -45,8 +45,8 @@ class TodoTextInput extends Component {
                    id='new-todo-input'
                    style={defaultStyle}
                    type="text"
-                   hintText={this.props.placeholder}
-                   autoFocus="true"
+                   placeholder={this.props.placeholder}
+                   autoFocus={true}
                    value={this.state.text}
                    onBlur={this.handleBlur.bind(this)}
                    onChange={this.handleChange.bind(this)}

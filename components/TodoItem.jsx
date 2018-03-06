@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 import TodoTextInput from './TodoTextInput';
-import { ListItem, IconButton, IconMenu, MenuItem } from 'material-ui';
-import { grey400 } from 'material-ui/styles/colors'
+import { ListItem, IconButton, IconMenu, MenuItem, Avatar, ListItemSecondaryAction, ListItemText } from 'material-ui';
+import { grey400 } from 'material-ui/colors'
 
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import CheckBoxIcon from 'material-ui/svg-icons/toggle/check-box';
-import CheckBoxBlankIcon from 'material-ui/svg-icons/toggle/check-box-outline-blank';
+import MoreVertIcon from 'material-ui-icons/MoreVert';
+import CheckBoxIcon from 'material-ui-icons/CheckBox';
+import CheckBoxBlankIcon from 'material-ui-icons/CheckBoxOutlineBlank';
 
 class TodoItem extends Component {
   constructor(props, context) {
@@ -47,17 +47,23 @@ class TodoItem extends Component {
     let element;
     if (this.state.editing) {
       element = (
-        <TodoTextInput text={todo.text}
-                      editing={this.state.editing}
-                      onSave={(text) => this.handleSave(todo.id, text)} />
+        // <TodoTextInput text={todo.text}
+        //               editing={this.state.editing}
+        //               onSave={(text) => this.handleSave(todo.id, text)} />
+        <input />
       );
     } else {
       element = (
-        <ListItem primaryText={todo.text}
-                  onTouchTap={() => completeTodo(todo.id)}
-                  leftIcon={todo.completed ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}
-                  rightIconButton={rightIconMenu}
-        />
+        <ListItem
+          onClick={() => completeTodo(todo.id)}>
+          <Avatar>
+            {todo.completed ? <CheckBoxIcon /> : <CheckBoxBlankIcon />}
+          </Avatar>
+          <ListItemText primary={todo.text} />
+          {/* <ListItemSecondaryAction>
+          {rightIconMenu}
+          </ListItemSecondaryAction> */}
+        </ListItem>
       );
     }
 

@@ -40,7 +40,7 @@ class MainSection extends Component {
                   style={{marginBottom: 10}}
                   label="Toggle All"
                   defaultChecked={completedCount === todos.length}
-                  onCheck={actions.completeAll} />
+                  onChange={actions.completeAll} />
       );
     }
   }

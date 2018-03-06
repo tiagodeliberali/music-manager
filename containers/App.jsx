@@ -15,7 +15,7 @@ class App extends Component {
     const { todos, actions } = this.props;
     return (
       <div>
-        <MuiThemeProvider muiTheme={theme}>
+        <MuiThemeProvider theme={theme}>
           <div>
             <Header addTodo={actions.addTodo}/>
             <MainSection todos={todos} actions={actions}/>

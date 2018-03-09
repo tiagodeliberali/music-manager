@@ -2,9 +2,15 @@ import React, { PropTypes, Component } from 'react';
 import SearchBar from './SearchBar';
 
 import { withStyles } from 'material-ui/styles';
-import { AppBar, IconButton, Toolbar, Button } from 'material-ui';
+import { AppBar, IconButton, Toolbar, Button, Tooltip } from 'material-ui';
 
 import { LibraryMusic, Add } from 'material-ui-icons';
+
+const styles = theme => ({
+  button: {
+    marginLeft: 50
+  }
+});
 
 function Header(props) {
   const { classes } = props;
@@ -16,17 +22,24 @@ function Header(props) {
             <LibraryMusic />
           </IconButton>
           <SearchBar />
-          <Button variant="fab"
-                  mini 
-                  aria-haspopup="true"
-                  color="inherit"
-                >
-            <Add />
-          </Button>
+          <Tooltip id="tooltip-icon" title="Adicionar música">
+            <Button className={classes.button}
+                    variant="fab"
+                    mini 
+                    aria-haspopup="true"
+                    color="inherit"
+                  >
+              <Add />
+            </Button>
+          </Tooltip>
         </Toolbar>
       </AppBar>
     </header>
   );
 }
 
-export default Header;
+Header.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Header);

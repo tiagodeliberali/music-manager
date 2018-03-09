@@ -1,4 +1,5 @@
 import React, { PropTypes } from "react";
+import MusicItem from './MusicItem'
 
 const MusicList = (props) => {
     const musicList = props.musics
@@ -8,7 +9,7 @@ const MusicList = (props) => {
 
     const items = musicList.map(music => {
         return (
-            <li key={music.id}>{music.name}</li>
+            <MusicItem key={music.id} music={music} />
         );
     })
 

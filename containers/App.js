@@ -23,19 +23,33 @@ class App extends Component {
     setTimeout(() => {
       this.setState({
         musics: [{
-          id: '0001',
+          id: '1',
           name: 'Faz chover',
           lyrics: 'Assim como a corsa\nAnseia por água',
           youtube: 'https://www.youtube.com/watch?v=f097WHc7h3g',
           hasTransparency: true
         },
         {
-          id: '0002',
+          id: '2',
           name: 'Fico feliz',
           lyrics: 'Fico feliz em vir em Sua casa\nErguer minhas mãos e cantar, Aleluia!',
           youtube: 'https://www.youtube.com/watch?v=4P-kQrmj6k8',
           hasTransparency: true
         }]
+      });
+    }, 500);
+  }
+
+  addMusic = (music) => {
+    setTimeout(() => {
+      this.setState({
+        musics: this.state.musics.concat({
+          id: this.state.musics.length + 1,
+          name: music.name,
+          lyrics: music.lyrics,
+          youtube: music.youtube,
+          hasTransparency: music.hasTransparency
+        })
       });
     }, 500);
   }
@@ -46,7 +60,7 @@ class App extends Component {
       <div>
         <MuiThemeProvider theme={theme}>
           <div>
-            <Header />
+            <Header onSave={this.addMusic} />
             <MusicList musics={this.state.musics} />
           </div>
         </MuiThemeProvider>

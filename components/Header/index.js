@@ -1,10 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import SearchBar from './SearchBar';
+import AddMusic from './AddMusic'
 
 import { withStyles } from 'material-ui/styles';
-import { AppBar, IconButton, Toolbar, Button, Tooltip } from 'material-ui';
+import { AppBar, IconButton, Toolbar, Button } from 'material-ui';
 
-import { LibraryMusic, Add } from 'material-ui-icons';
+import { LibraryMusic } from 'material-ui-icons';
 
 const styles = theme => ({
   button: {
@@ -22,16 +23,7 @@ function Header(props) {
             <LibraryMusic />
           </IconButton>
           <SearchBar />
-          <Tooltip id="tooltip-icon" title="Adicionar música">
-            <Button className={classes.button}
-                    variant="fab"
-                    mini 
-                    aria-haspopup="true"
-                    color="inherit"
-                  >
-              <Add />
-            </Button>
-          </Tooltip>
+          <AddMusic onSave={props.onSave} />
         </Toolbar>
       </AppBar>
     </header>

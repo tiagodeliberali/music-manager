@@ -48,6 +48,7 @@
     "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
     "fbjs": "^0.8.5",
+    "lodash": "^4.17.5",
     "material-ui": "^1.0.0-beta.36",
     "material-ui-icons": "^1.0.0-beta.36",
     "react": "^15.4.0",

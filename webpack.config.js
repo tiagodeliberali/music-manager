@@ -9,7 +9,7 @@ module.exports = {
       extensions: ['.js', '.jsx', '.css']
   },
   entry: {
-    bundle: ['babel-polyfill', "./src/index.jsx", "./src/main.css", "./src/index.html"],
+    bundle: ['babel-polyfill', "./src/index.js", "./src/main.css", "./src/index.html"],
   },
   output: {
     path: __dirname + "/static",

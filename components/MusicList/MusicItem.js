@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
-import { Typography, IconButton, Collapse } from 'material-ui'
-import { Favorite, Layers, LayersClear, ExpandMore } from 'material-ui-icons'
+import Menu, { MenuItem } from 'material-ui/Menu';
+import { Typography, IconButton, Collapse, CardHeader } from 'material-ui'
+import { Favorite, Layers, LayersClear, ExpandMore, MoreVert } from 'material-ui-icons'
 import classnames from 'classnames'
 import MusicEditor from '../MusicEditor'
 
@@ -25,7 +26,10 @@ const styles = theme => ({
 })
 
 class MusicItem extends Component {
-  state = { expanded: false }
+  state = {
+    expanded: false,
+    anchorEl: null
+  }
 
   constructor(props) {
     super(props)
@@ -43,16 +47,44 @@ class MusicItem extends Component {
     return content.substring(content.indexOf('\n') + 1)
   }
 
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  }
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  }
+
+
   render = () => {
     const { classes, music, onSave } = this.props;
+    const { anchorEl } = this.state;
 
     return (
       <div>
         <Card className={classes.card}>
+          <CardHeader action={
+            <div>
+              <IconButton
+                aria-owns={anchorEl ? 'simple-menu' : null}
+                aria-haspopup="true"
+                onClick={this.handleClick}>
+                <MoreVert />
+              </IconButton>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={this.handleClose}
+              >
+                <MenuItem><MusicEditor onSave={onSave} onClose={this.handleClose} music={music} /></MenuItem>
+              </Menu>
+            </div>
+          }
+            title={music.name}
+            subheader="Tocada 12 vezes" />
           <CardContent>
             <Typography variant="headline" component="h2">
-              {music.name}
-              <MusicEditor onSave={onSave} music={music} />
             </Typography>
             <Typography component="pre">
               {this.firstLines(music.lyrics)}

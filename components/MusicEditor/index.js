@@ -21,9 +21,11 @@ class AddMusic extends Component {
         super(props)
         this.classes = props.classes
         this.onSave = props.onSave
-
+        this.onClose = props.onClose || this.emptyFunction
         this.loadInitialState()
     }
+
+    emptyFunction = () => {}
 
     loadInitialState = () => {
         if (this.props.music) {
@@ -65,10 +67,6 @@ class AddMusic extends Component {
         this.setState({ open: true })
     }
 
-    handleClose = () => {
-        this.clearState()
-    }
-
     handleNameChange = (event) => {
         this.setState({ name: event.target.value })
     }
@@ -101,7 +99,13 @@ class AddMusic extends Component {
         })
 
         this.clearState()
-    };
+        this.onClose()
+    }
+
+    handleClose = () => {
+        this.clearState()
+        this.onClose()
+    }
 
     isValid = () => {
         return this.state.name.trim() != ""
@@ -112,14 +116,22 @@ class AddMusic extends Component {
         return (
             <div>
                 <Tooltip id="tooltip-icon" title="Adicionar música">
-                    <Button className={this.classes.button}
+                    {this.editMode() 
+                    ? (<Button
+                        mini
+                        aria-haspopup="true"
+                        color="inherit"
+                        onClick={this.handleClickOpen}>
+                        Editar
+                    </Button>)
+                    : (<Button className={this.classes.button}
                         variant="fab"
                         mini
                         aria-haspopup="true"
                         color="inherit"
                         onClick={this.handleClickOpen}>
-                        {this.editMode() ? <Edit /> : <Add />}
-                    </Button>
+                         <Add />
+                    </Button>)}
                 </Tooltip>
                 <Dialog
                     open={this.state.open}

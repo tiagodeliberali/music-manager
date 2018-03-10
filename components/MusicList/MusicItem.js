@@ -10,8 +10,11 @@ import MusicEditor from '../MusicEditor'
 
 const styles = theme => ({
   card: {
-    width: 280,
-    marginTop: 30
+    marginTop: 30,
+    maxWidth: 350
+  },
+  cardContent: {
+    paddingTop: 0
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -83,7 +86,7 @@ class MusicItem extends Component {
           }
             title={music.name}
             subheader={"Tocada " + (music.times || 0) + " vezes"} />
-          <CardContent>
+          <CardContent className={classes.cardContent}>
             <Typography variant="headline" component="h2">
             </Typography>
             <Typography component="pre">

@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { Button, Tooltip } from 'material-ui';
 import { TextField, FormControlLabel, Switch } from 'material-ui';
 import Dialog, {
@@ -16,10 +16,13 @@ const styles = theme => ({
     }
 });
 
-
-class AddMusic extends React.Component {
+class AddMusic extends Component {
     state = {
         open: false,
+        name: '',
+        lyrics: '',
+        youtube: '',
+        hasTransparency: '',
     };
 
     constructor(props) {
@@ -28,23 +31,57 @@ class AddMusic extends React.Component {
         this.onSave = props.onSave;
     }
 
+    clearState = () => {
+        this.setState({ 
+            open: false,
+            name: '',
+            lyrics: '',
+            youtube: '',
+            hasTransparency: ''
+         });
+    }
+
     handleClickOpen = () => {
         this.setState({ open: true });
     };
 
     handleClose = () => {
-        this.setState({ open: false });
+        this.clearState()
+    };
+
+    handleNameChange = (event) => {
+        this.setState({ name: event.target.value });
+    };
+
+    handleLyricsChange = (event) => {
+        this.setState({ lyrics: event.target.value });
+    };
+
+    handleYoutubeChange = (event) => {
+        this.setState({ youtube: event.target.value });
+    };
+
+    handleHasTransparencyChange = (event) => {
+        this.setState({ hasTransparency: event.target.value });
     };
 
     handleSave = () => {
+        const music = this.state;
+
         this.onSave({
-            name: 'music.name',
-            lyrics: 'music.lyrics',
-            youtube: 'music.youtube',
-            hasTransparency: true
+            name: music.name,
+            lyrics: music.lyrics,
+            youtube: music.youtube,
+            hasTransparency: music.hasTransparency
         })
-        this.setState({ open: false });
+
+       this.clearState()
     };
+
+    isValid = () => {
+        return this.state.name.trim() != ""
+            && this.state.lyrics.trim() != "";
+    }
 
     render() {
         return (
@@ -59,6 +96,7 @@ class AddMusic extends React.Component {
                         <Add />
                     </Button>
                 </Tooltip>
+                <form onSubmit={this.handleSave}>
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleClose}
@@ -70,6 +108,8 @@ class AddMusic extends React.Component {
                             autoFocus
                             margin="dense"
                             id="name"
+                            value={this.state.name}
+                            onChange={this.handleNameChange}
                             label="Nome"
                             type="text"
                             fullWidth
@@ -77,6 +117,8 @@ class AddMusic extends React.Component {
                         <TextField
                             margin="dense"
                             id="youtube"
+                            value={this.state.youtube}
+                            onChange={this.handleYoutubeChange}
                             label="Link no youtube"
                             type="text"
                             fullWidth
@@ -86,6 +128,8 @@ class AddMusic extends React.Component {
                                 <Switch
                                     id="hasTransparency"
                                     color="primary"
+                                    value={this.state.hasTransparency}
+                                    onChange={this.handleHasTransparencyChange}
                                 />
                             }
                             label="Possui transparência"
@@ -93,7 +137,9 @@ class AddMusic extends React.Component {
                         <TextField
                             multiline
                             margin="dense"
-                            id="youtube"
+                            id="lyrics"
+                            value={this.state.lyrics}
+                            onChange={this.handleLyricsChange}
                             label="Letra"
                             type="text"
                             fullWidth
@@ -102,12 +148,13 @@ class AddMusic extends React.Component {
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Cancelar
-            </Button>
-                        <Button onClick={this.handleSave} color="primary">
+                        </Button>
+                        <Button onClick={this.handleSave} color="primary" disabled={!this.isValid()}>
                             Salvar
-            </Button>
+                        </Button>
                     </DialogActions>
                 </Dialog>
+                </form>
             </div>
         );
     }

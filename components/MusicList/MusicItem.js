@@ -82,7 +82,7 @@ class MusicItem extends Component {
             </div>
           }
             title={music.name}
-            subheader="Tocada 12 vezes" />
+            subheader={"Tocada " + (music.times || 0) + " vezes"} />
           <CardContent>
             <Typography variant="headline" component="h2">
             </Typography>

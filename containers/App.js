@@ -27,14 +27,16 @@ class App extends Component {
           name: 'Faz chover',
           lyrics: 'Assim como a corsa\nAnseia por água',
           youtube: 'https://www.youtube.com/watch?v=f097WHc7h3g',
-          hasTransparency: true
+          hasTransparency: true,
+          times: 15
         },
         {
           id: '2',
           name: 'Fico feliz',
           lyrics: 'Fico feliz em vir em Sua casa\nErguer minhas mãos e cantar, Aleluia!',
           youtube: 'https://www.youtube.com/watch?v=4P-kQrmj6k8',
-          hasTransparency: false
+          hasTransparency: false,
+          times: 5
         }]
       });
     }, 500);

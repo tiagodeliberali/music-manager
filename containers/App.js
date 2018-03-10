@@ -34,7 +34,7 @@ class App extends Component {
           name: 'Fico feliz',
           lyrics: 'Fico feliz em vir em Sua casa\nErguer minhas mãos e cantar, Aleluia!',
           youtube: 'https://www.youtube.com/watch?v=4P-kQrmj6k8',
-          hasTransparency: true
+          hasTransparency: false
         }]
       });
     }, 500);

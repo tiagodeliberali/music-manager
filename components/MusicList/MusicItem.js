@@ -9,8 +9,8 @@ import MusicEditor from '../MusicEditor'
 
 const styles = theme => ({
   card: {
-    width: 350,
-    margin: 30
+    width: 280,
+    marginTop: 30
   },
   expand: {
     transform: 'rotate(0deg)',

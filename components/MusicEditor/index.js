@@ -35,7 +35,7 @@ class AddMusic extends Component {
                 name: music.name,
                 lyrics: music.lyrics,
                 youtube: music.youtube,
-                hasTransparency: '' + music.hasTransparency
+                hasTransparency: music.hasTransparency
             }
         }
         else
@@ -49,13 +49,16 @@ class AddMusic extends Component {
     }
 
     clearState = () => {
-        this.setState({
-            open: false,
-            name: '',
-            lyrics: '',
-            youtube: '',
-            hasTransparency: ''
-        })
+        if (this.editMode())
+            this.setState({ open: false })
+        else
+            this.setState({
+                open: false,
+                name: '',
+                lyrics: '',
+                youtube: '',
+                hasTransparency: ''
+            })
     }
 
     handleClickOpen = () => {
@@ -79,7 +82,7 @@ class AddMusic extends Component {
     }
 
     handleHasTransparencyChange = (event) => {
-        this.setState({ hasTransparency: event.target.value })
+        this.setState({ hasTransparency: event.target.checked })
     }
 
     editMode = () => {
@@ -123,7 +126,7 @@ class AddMusic extends Component {
                     onClose={this.handleClose}
                     aria-labelledby="form-dialog-title"
                 >
-                    <DialogTitle id="form-dialog-title">Nova música</DialogTitle>
+                    <DialogTitle id="form-dialog-title">{this.editMode() ? "Editar música" : "Nova música"}</DialogTitle>
                     <DialogContent>
                         <TextField
                             autoFocus
@@ -149,7 +152,7 @@ class AddMusic extends Component {
                                 <Switch
                                     id="hasTransparency"
                                     color="primary"
-                                    value={this.state.hasTransparency}
+                                    checked={this.state.hasTransparency}
                                     onChange={this.handleHasTransparencyChange}
                                 />
                             }

@@ -9,7 +9,10 @@ const MusicList = (props) => {
 
     const items = musicList.map(music => {
         return (
-            <MusicItem key={music.id} music={music} />
+            <MusicItem 
+                key={music.id} 
+                music={music} 
+                onSave={props.onSave} />
         );
     })
 

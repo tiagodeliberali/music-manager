@@ -41,17 +41,29 @@ class App extends Component {
   }
 
   addMusic = (music) => {
-    setTimeout(() => {
-      this.setState({
-        musics: this.state.musics.concat({
-          id: this.state.musics.length + 1,
-          name: music.name,
-          lyrics: music.lyrics,
-          youtube: music.youtube,
-          hasTransparency: music.hasTransparency
-        })
-      });
-    }, 500);
+    this.setState({
+      musics: this.state.musics.concat({
+        id: this.state.musics.length + 1,
+        name: music.name,
+        lyrics: music.lyrics,
+        youtube: music.youtube,
+        hasTransparency: music.hasTransparency
+      })
+    })
+  }
+
+  editMusic = (music) => {
+    this.setState({
+      musics: this.state.musics.map(item => 
+        item.id === music.id 
+          ? Object.assign({}, item, { 
+            name: music.name,
+            lyrics: music.lyrics,
+            youtube: music.youtube,
+            hasTransparency: music.hasTransparency
+          }) 
+          : item)
+    })
   }
 
   render() {
@@ -61,7 +73,7 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <div>
             <Header onSave={this.addMusic} />
-            <MusicList musics={this.state.musics} />
+            <MusicList musics={this.state.musics} onSave={this.editMusic} />
           </div>
         </MuiThemeProvider>
       </div>

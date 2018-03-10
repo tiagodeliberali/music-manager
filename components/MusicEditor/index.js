@@ -1,14 +1,14 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes, Component } from 'react'
 import { Button, Tooltip } from 'material-ui';
-import { TextField, FormControlLabel, Switch } from 'material-ui';
+import { TextField, FormControlLabel, Switch } from 'material-ui'
 import Dialog, {
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-} from 'material-ui/Dialog';
-import { withStyles } from 'material-ui/styles';
-import { Add } from 'material-ui-icons';
+} from 'material-ui/Dialog'
+import { withStyles } from 'material-ui/styles'
+import { Add, Edit } from 'material-ui-icons'
 
 const styles = theme => ({
     button: {
@@ -17,70 +17,92 @@ const styles = theme => ({
 });
 
 class AddMusic extends Component {
-    state = {
-        open: false,
-        name: '',
-        lyrics: '',
-        youtube: '',
-        hasTransparency: '',
-    };
-
     constructor(props) {
         super(props)
         this.classes = props.classes
-        this.onSave = props.onSave;
+        this.onSave = props.onSave
+
+        this.loadInitialState()
+    }
+
+    loadInitialState = () => {
+        if (this.props.music) {
+            const music = this.props.music;
+
+            this.state = {
+                open: false,
+                id: music.id,
+                name: music.name,
+                lyrics: music.lyrics,
+                youtube: music.youtube,
+                hasTransparency: '' + music.hasTransparency
+            }
+        }
+        else
+            this.state = {
+                open: false,
+                name: '',
+                lyrics: '',
+                youtube: '',
+                hasTransparency: ''
+            }
     }
 
     clearState = () => {
-        this.setState({ 
+        this.setState({
             open: false,
             name: '',
             lyrics: '',
             youtube: '',
             hasTransparency: ''
-         });
+        })
     }
 
     handleClickOpen = () => {
-        this.setState({ open: true });
-    };
+        this.setState({ open: true })
+    }
 
     handleClose = () => {
         this.clearState()
-    };
+    }
 
     handleNameChange = (event) => {
-        this.setState({ name: event.target.value });
-    };
+        this.setState({ name: event.target.value })
+    }
 
     handleLyricsChange = (event) => {
-        this.setState({ lyrics: event.target.value });
-    };
+        this.setState({ lyrics: event.target.value })
+    }
 
     handleYoutubeChange = (event) => {
-        this.setState({ youtube: event.target.value });
-    };
+        this.setState({ youtube: event.target.value })
+    }
 
     handleHasTransparencyChange = (event) => {
-        this.setState({ hasTransparency: event.target.value });
-    };
+        this.setState({ hasTransparency: event.target.value })
+    }
+
+    editMode = () => {
+        return this.props.music != undefined
+    }
 
     handleSave = () => {
         const music = this.state;
 
         this.onSave({
+            id: music.id,
             name: music.name,
             lyrics: music.lyrics,
             youtube: music.youtube,
             hasTransparency: music.hasTransparency
         })
 
-       this.clearState()
+        this.clearState()
     };
 
     isValid = () => {
         return this.state.name.trim() != ""
-            && this.state.lyrics.trim() != "";
+            && this.state.lyrics.trim() != ""
     }
 
     render() {
@@ -93,10 +115,9 @@ class AddMusic extends Component {
                         aria-haspopup="true"
                         color="inherit"
                         onClick={this.handleClickOpen}>
-                        <Add />
+                        {this.editMode() ? <Edit /> : <Add />}
                     </Button>
                 </Tooltip>
-                <form onSubmit={this.handleSave}>
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleClose}
@@ -154,14 +175,13 @@ class AddMusic extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-                </form>
             </div>
-        );
+        )
     }
 }
 
 AddMusic.propTypes = {
     classes: PropTypes.object.isRequired
-  };
+}
 
-export default withStyles(styles)(AddMusic);
+export default withStyles(styles)(AddMusic)

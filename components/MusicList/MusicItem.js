@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
-import { Typography, IconButton, Collapse } from 'material-ui';
-import { Favorite, Layers, LayersClear, ExpandMore } from 'material-ui-icons';
-import classnames from 'classnames';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from 'material-ui/styles'
+import Card, { CardActions, CardContent } from 'material-ui/Card'
+import { Typography, IconButton, Collapse } from 'material-ui'
+import { Favorite, Layers, LayersClear, ExpandMore } from 'material-ui-icons'
+import classnames from 'classnames'
+import MusicEditor from '../MusicEditor'
 
 const styles = theme => ({
   card: {
@@ -21,10 +22,10 @@ const styles = theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-});
+})
 
 class MusicItem extends Component {
-  state = { expanded: false };
+  state = { expanded: false }
 
   constructor(props) {
     super(props)
@@ -32,7 +33,7 @@ class MusicItem extends Component {
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded });
-  };
+  }
 
   firstLines = (content) => {
     return content.substring(0, content.indexOf('\n'))
@@ -43,7 +44,7 @@ class MusicItem extends Component {
   }
 
   render = () => {
-    const { classes, music } = this.props;
+    const { classes, music, onSave } = this.props;
 
     return (
       <div>
@@ -51,6 +52,7 @@ class MusicItem extends Component {
           <CardContent>
             <Typography variant="headline" component="h2">
               {music.name}
+              <MusicEditor onSave={onSave} music={music} />
             </Typography>
             <Typography component="pre">
               {this.firstLines(music.lyrics)}
@@ -62,10 +64,10 @@ class MusicItem extends Component {
             </Collapse>
           </CardContent>
           <CardActions>
-            <IconButton aria-label="Add to favorites">
+            <IconButton>
               <Favorite />
             </IconButton>
-            <IconButton aria-label="Share">
+            <IconButton>
               {music.hasTransparency ? <Layers /> : <LayersClear />}
             </IconButton>
             <IconButton
@@ -81,13 +83,13 @@ class MusicItem extends Component {
           </CardActions>
         </Card>
       </div>
-    );
+    )
   }
 }
 
 MusicItem.propTypes = {
   classes: PropTypes.object.isRequired,
   music: PropTypes.object.isRequired
-};
+}
 
-export default withStyles(styles)(MusicItem);
+export default withStyles(styles)(MusicItem)

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import SearchBar from './SearchBar';
-import AddMusic from './AddMusic'
+import MusicEditor from '../MusicEditor'
 
 import { withStyles } from 'material-ui/styles';
 import { AppBar, IconButton, Toolbar, Button } from 'material-ui';
@@ -23,7 +23,7 @@ function Header(props) {
             <LibraryMusic />
           </IconButton>
           <SearchBar />
-          <AddMusic onSave={props.onSave} />
+          <MusicEditor onSave={props.onSave} />
         </Toolbar>
       </AppBar>
     </header>

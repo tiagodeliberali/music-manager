@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { Input } from 'material-ui';
 import _ from 'lodash'
 

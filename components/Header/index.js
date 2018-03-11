@@ -1,10 +1,9 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import SearchBar from './SearchBar';
 import MusicEditor from '../MusicEditor'
 
 import { withStyles } from 'material-ui/styles';
-import { AppBar, IconButton, Toolbar, Button } from 'material-ui';
-
+import { AppBar, IconButton, Toolbar } from 'material-ui';
 import { LibraryMusic } from 'material-ui-icons';
 
 const styles = theme => ({

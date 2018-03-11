@@ -10,13 +10,12 @@ const styles = theme => ({
   })
 
 const MusicList = (props) => {
-    const  musicList = props.musics
-    const  { classes } = props
+    const  { classes, musics } = props
 
-    if (!musicList || musicList.length == 0)
+    if (!musics || musics.length == 0)
         return <div>Carregando...</div>
 
-    const items = musicList.map(music => {
+    const items = musics.map(music => {
         return (
             <MusicItem 
                 key={music.id} 

@@ -1,14 +1,9 @@
 import React, { PropTypes, Component } from 'react'
-import { Button, Tooltip } from 'material-ui';
-import { TextField, FormControlLabel, Switch } from 'material-ui'
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from 'material-ui/Dialog'
+import { TextField, FormControlLabel, Switch, Button, Tooltip } from 'material-ui'
+import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle } from 'material-ui/Dialog'
 import { withStyles } from 'material-ui/styles'
 import { Add, Edit } from 'material-ui-icons'
+import musicBuilder from '../../services/music-builder'
 
 const styles = theme => ({
     button: {
@@ -17,6 +12,14 @@ const styles = theme => ({
 });
 
 class AddMusic extends Component {
+    emptyState = {
+        open: false,
+        name: '',
+        lyrics: '',
+        youtube: '',
+        hasTransparency: ''
+    }
+
     constructor(props) {
         super(props)
         this.classes = props.classes
@@ -25,42 +28,22 @@ class AddMusic extends Component {
         this.loadInitialState()
     }
 
-    emptyFunction = () => {}
+    emptyFunction = () => { }
 
     loadInitialState = () => {
-        if (this.props.music) {
-            const music = this.props.music;
-
-            this.state = {
-                open: false,
-                id: music.id,
-                name: music.name,
-                lyrics: music.lyrics,
-                youtube: music.youtube,
-                hasTransparency: music.hasTransparency
-            }
-        }
+        if (this.props.music)
+            this.state = Object.assign({},
+                this.emptyState,
+                musicBuilder(this.props.music))
         else
-            this.state = {
-                open: false,
-                name: '',
-                lyrics: '',
-                youtube: '',
-                hasTransparency: ''
-            }
+            this.state = { ...this.emptyState }
     }
 
     clearState = () => {
         if (this.editMode())
             this.setState({ open: false })
         else
-            this.setState({
-                open: false,
-                name: '',
-                lyrics: '',
-                youtube: '',
-                hasTransparency: ''
-            })
+            this.setState({ ...this.emptyState })
     }
 
     handleClickOpen = () => {
@@ -88,16 +71,7 @@ class AddMusic extends Component {
     }
 
     handleSave = () => {
-        const music = this.state;
-
-        this.onSave({
-            id: music.id,
-            name: music.name,
-            lyrics: music.lyrics,
-            youtube: music.youtube,
-            hasTransparency: music.hasTransparency
-        })
-
+        this.onSave(musicBuilder(this.state))
         this.clearState()
         this.onClose()
     }
@@ -115,8 +89,7 @@ class AddMusic extends Component {
     render() {
         return (
             <div>
-                <Tooltip id="tooltip-icon" title="Adicionar música">
-                    {this.editMode() 
+                {this.editMode()
                     ? (<Button
                         mini
                         aria-haspopup="true"
@@ -124,15 +97,16 @@ class AddMusic extends Component {
                         onClick={this.handleClickOpen}>
                         Editar
                     </Button>)
-                    : (<Button className={this.classes.button}
-                        variant="fab"
-                        mini
-                        aria-haspopup="true"
-                        color="inherit"
-                        onClick={this.handleClickOpen}>
-                         <Add />
-                    </Button>)}
-                </Tooltip>
+                    : (<Tooltip id="tooltip-icon" title="Adicionar música">
+                        <Button className={this.classes.button}
+                            variant="fab"
+                            mini
+                            aria-haspopup="true"
+                            color="inherit"
+                            onClick={this.handleClickOpen}>
+                            <Add />
+                        </Button>
+                    </Tooltip>)}
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleClose}

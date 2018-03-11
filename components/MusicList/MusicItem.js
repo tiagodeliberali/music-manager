@@ -31,7 +31,7 @@ const styles = theme => ({
 class MusicItem extends Component {
   state = {
     expanded: false,
-    anchorEl: null
+    menuElement: null
   }
 
   constructor(props) {
@@ -50,18 +50,17 @@ class MusicItem extends Component {
     return content.substring(content.indexOf('\n') + 1)
   }
 
-  handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
+  handleMenuClick = event => {
+    this.setState({ menuElement: event.currentTarget });
   }
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
+  handleMenuClose = () => {
+    this.setState({ menuElement: null });
   }
-
 
   render = () => {
     const { classes, music, onSave } = this.props;
-    const { anchorEl } = this.state;
+    const { menuElement } = this.state;
 
     return (
       <div>
@@ -69,18 +68,23 @@ class MusicItem extends Component {
           <CardHeader action={
             <div>
               <IconButton
-                aria-owns={anchorEl ? 'simple-menu' : null}
+                aria-owns={menuElement ? 'simple-menu' : null}
                 aria-haspopup="true"
-                onClick={this.handleClick}>
+                onClick={this.handleMenuClick}>
                 <MoreVert />
               </IconButton>
               <Menu
                 id="simple-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={this.handleClose}
+                anchorEl={menuElement}
+                open={Boolean(menuElement)}
+                onClose={this.handleMenuClose}
               >
-                <MenuItem><MusicEditor onSave={onSave} onClose={this.handleClose} music={music} /></MenuItem>
+                <MenuItem>
+                  <MusicEditor
+                    onSave={onSave}
+                    onClose={this.handleMenuClose}
+                    music={music} />
+                </MenuItem>
               </Menu>
             </div>
           }
@@ -103,7 +107,9 @@ class MusicItem extends Component {
               <Favorite />
             </IconButton>
             <IconButton>
-              {music.hasTransparency ? <Layers /> : <LayersClear />}
+              {music.hasTransparency 
+                ? <Layers /> 
+                : <LayersClear />}
             </IconButton>
             <IconButton
               className={classnames(classes.expand, {
@@ -111,7 +117,7 @@ class MusicItem extends Component {
               })}
               onClick={this.handleExpandClick}
               aria-expanded={this.state.expanded}
-              aria-label="Show more"
+              aria-label="Mostrar tudo"
             >
               <ExpandMore />
             </IconButton>

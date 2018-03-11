@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import theme from '../src/material_ui_raw_theme_file'
 
+import theme from '../src/material_ui_raw_theme_file'
 import Header from '../components/Header';
 import MusicList from '../components/MusicList';
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import musicBuilder from '../services/music-builder'
 
 class App extends Component {
   constructor(props) {
@@ -44,13 +42,11 @@ class App extends Component {
 
   addMusic = (music) => {
     this.setState({
-      musics: this.state.musics.concat({
-        id: this.state.musics.length + 1,
-        name: music.name,
-        lyrics: music.lyrics,
-        youtube: music.youtube,
-        hasTransparency: music.hasTransparency
-      })
+      musics: this.state.musics.concat(
+        Object.assign({}, 
+          musicBuilder(music), 
+          { id: this.state.musics.length + 1 })
+      )
     })
   }
 
@@ -58,12 +54,7 @@ class App extends Component {
     this.setState({
       musics: this.state.musics.map(item => 
         item.id === music.id 
-          ? Object.assign({}, item, { 
-            name: music.name,
-            lyrics: music.lyrics,
-            youtube: music.youtube,
-            hasTransparency: music.hasTransparency
-          }) 
+          ? Object.assign({}, item, musicBuilder(music)) 
           : item)
     })
   }

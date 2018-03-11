@@ -5,17 +5,27 @@ import _ from 'lodash'
 class SearchBar extends Component {
     constructor(props) {
         super(props)
+
+        this.onSearch = props.onSearch
+        this.state = { term: '' }
+    }
+
+    searchMusic = (event) => {
+        const term = event.target.value
+        this.setState({ term })
+        this.onSearch(term)
     }
 
     render() {
-        //const search = _.debounce(term => { this.searchMusic(term) }, 300)
         return (
             <Input
-            placeholder="Buscar música"
-            inputProps={{
-              'aria-label': 'Description',
-            }}
-          />
+                placeholder="Buscar música"
+                value={this.state.term}
+                onChange={this.searchMusic}
+                inputProps={{
+                    'aria-label': 'Description',
+                }}
+            />
         )
     }
 }

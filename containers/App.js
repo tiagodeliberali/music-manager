@@ -19,23 +19,27 @@ class App extends Component {
 
   loadMusics = (term) => {
     setTimeout(() => {
+      //TODO: get dataq from api
+      var musicList = [{
+        id: '1',
+        name: 'Faz chover',
+        lyrics: 'Assim como a corsa\nAnseia por água',
+        youtube: 'https://www.youtube.com/watch?v=f097WHc7h3g',
+        hasTransparency: true,
+        times: 15
+      },
+      {
+        id: '2',
+        name: 'Fico feliz',
+        lyrics: 'Fico feliz em vir em Sua casa\nErguer minhas mãos e cantar, Aleluia!',
+        youtube: 'https://www.youtube.com/watch?v=4P-kQrmj6k8',
+        hasTransparency: false,
+        times: 5
+      }]
+
       this.setState({
-        musics: [{
-          id: '1',
-          name: 'Faz chover',
-          lyrics: 'Assim como a corsa\nAnseia por água',
-          youtube: 'https://www.youtube.com/watch?v=f097WHc7h3g',
-          hasTransparency: true,
-          times: 15
-        },
-        {
-          id: '2',
-          name: 'Fico feliz',
-          lyrics: 'Fico feliz em vir em Sua casa\nErguer minhas mãos e cantar, Aleluia!',
-          youtube: 'https://www.youtube.com/watch?v=4P-kQrmj6k8',
-          hasTransparency: false,
-          times: 5
-        }]
+        musics: musicList,
+        filteredMusic: musicList
       });
     }, 500);
   }
@@ -43,8 +47,8 @@ class App extends Component {
   addMusic = (music) => {
     this.setState({
       musics: this.state.musics.concat(
-        Object.assign({}, 
-          musicBuilder(music), 
+        Object.assign({},
+          musicBuilder(music),
           { id: this.state.musics.length + 1 })
       )
     })
@@ -52,10 +56,21 @@ class App extends Component {
 
   editMusic = (music) => {
     this.setState({
-      musics: this.state.musics.map(item => 
-        item.id === music.id 
-          ? Object.assign({}, item, musicBuilder(music)) 
+      musics: this.state.musics.map(item =>
+        item.id === music.id
+          ? Object.assign({}, item, musicBuilder(music))
           : item)
+    })
+  }
+
+  filterMusicList = (term) => {
+    console.log(term)
+    const lowerTerm = (term || '').toLowerCase()
+
+    this.setState({
+      filteredMusic: this.state.musics.filter(music =>
+        (music.name || '').toLowerCase().indexOf(lowerTerm) > -1 
+        || (music.lyrics || '').toLowerCase().indexOf(lowerTerm) > -1)
     })
   }
 
@@ -65,8 +80,8 @@ class App extends Component {
       <div>
         <MuiThemeProvider theme={theme}>
           <div>
-            <Header onSave={this.addMusic} />
-            <MusicList musics={this.state.musics} onSave={this.editMusic} />
+            <Header onSave={this.addMusic} onSearch={this.filterMusicList} />
+            <MusicList musics={this.state.filteredMusic || []} onSave={this.editMusic} />
           </div>
         </MuiThemeProvider>
       </div>

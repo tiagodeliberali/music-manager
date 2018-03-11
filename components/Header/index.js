@@ -13,7 +13,7 @@ const styles = theme => ({
 });
 
 function Header(props) {
-  const { classes } = props;
+  const { classes, onSearch } = props;
   return (
     <header className="header">
       <AppBar position="static" color="default">
@@ -21,7 +21,7 @@ function Header(props) {
           <IconButton color="inherit" aria-label="Menu">
             <LibraryMusic />
           </IconButton>
-          <SearchBar />
+          <SearchBar onSearch={onSearch} />
           <MusicEditor onSave={props.onSave} />
         </Toolbar>
       </AppBar>

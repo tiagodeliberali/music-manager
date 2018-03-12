@@ -27,6 +27,7 @@ class App extends Component {
     const musicList = await this.data.get()
 
     this.setState({
+      term: '',
       musics: musicList,
       filteredMusic: musicList
     });
@@ -38,20 +39,25 @@ class App extends Component {
     this.setState({
       musics: this.state.musics.concat(added)
     })
+
+    this.filterMusicList(this.state.term)
   }
 
   editMusic = async (music) => {
     const updated = await this.data.update(musicBuilder(music))
 
     this.setState({
-      musics: this.state.musics.map(item => item.id === music.id ? updated : item)
+      musics: this.state.musics.map(item => item.id === music.id ? music : item)
     })
+
+    this.filterMusicList(this.state.term)
   }
 
   filterMusicList = (term) => {
     const lowerTerm = (term || '').toLowerCase()
 
     this.setState({
+      term: term,
       filteredMusic: this.state.musics.filter(music =>
         (music.name || '').toLowerCase().indexOf(lowerTerm) > -1 
         || (music.lyrics || '').toLowerCase().indexOf(lowerTerm) > -1)

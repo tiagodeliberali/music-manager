@@ -19,7 +19,7 @@ export default (db, onConnect) => {
                 }
                 
                 result.canRead = () => {
-                    return dbUser && (dbUser.admin || dbUser.author  || dbUser.reader)
+                    return dbUser //&& (dbUser.admin || dbUser.author  || dbUser.reader)
                 }
 
                 onConnect(result)

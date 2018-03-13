@@ -19,9 +19,14 @@ class MusicData {
     }
 
     getUser = async (id) => {
-        const user = await this.userCollection.doc(id).get()
+        try {
+            const user = await this.userCollection.doc(id).get()
 
-        return user.data()
+                return user.data() || {}
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
     get = async () => {

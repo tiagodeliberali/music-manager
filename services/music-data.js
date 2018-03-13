@@ -47,7 +47,7 @@ class MusicData {
 
     update = async (music) => {
         try {
-            await this.musicCollection.set(music)
+            await this.musicCollection.doc(music.id).set(music)
             return Object.assign({}, music)
         }
         catch (err) {

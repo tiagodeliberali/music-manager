@@ -3,7 +3,7 @@ import SearchBar from './SearchBar';
 import MusicEditor from '../MusicEditor'
 
 import { withStyles } from 'material-ui/styles';
-import { AppBar, IconButton, Toolbar } from 'material-ui';
+import { AppBar, IconButton, Toolbar, Avatar } from 'material-ui';
 import { LibraryMusic } from 'material-ui-icons';
 
 const styles = theme => ({
@@ -13,7 +13,16 @@ const styles = theme => ({
 });
 
 function Header(props) {
-  const { classes, onSearch } = props;
+  const { classes, onSearch, user } = props;
+
+  let avatar;
+  if (user)
+    avatar = <Avatar className={classes.button} alt={user.displayName} src={user.photoURL} />
+
+  let editMusic;
+  if (user && user.canEdit())
+    editMusic = <MusicEditor onSave={props.onSave} />
+
   return (
     <header className="header">
       <AppBar position="static" color="default">
@@ -22,7 +31,8 @@ function Header(props) {
             <LibraryMusic />
           </IconButton>
           <SearchBar onSearch={onSearch} />
-          <MusicEditor onSave={props.onSave} />
+          {editMusic}
+          {avatar}
         </Toolbar>
       </AppBar>
     </header>

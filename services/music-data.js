@@ -1,8 +1,6 @@
 import firebase from 'firebase'
 require('firebase/firestore')
 
-const collectionName = 'musics'
-
 class MusicData {
     constructor() {
         var config = {
@@ -16,7 +14,14 @@ class MusicData {
         
         firebase.initializeApp(config)
         this.db = firebase.firestore()
-        this.musicCollection = this.db.collection(collectionName)
+        this.musicCollection = this.db.collection('musics')
+        this.userCollection = this.db.collection('users')
+    }
+
+    getUser = async (id) => {
+        const user = await this.userCollection.doc(id).get()
+
+        return user.data()
     }
 
     get = async () => {

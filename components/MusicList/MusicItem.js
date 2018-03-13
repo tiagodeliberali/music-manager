@@ -43,11 +43,15 @@ class MusicItem extends Component {
   }
 
   firstLines = (content) => {
-    return content.substring(0, content.indexOf('\n'))
+    return content.substring(0, this.cutPosition(content))
   }
 
   otherLines = (content) => {
-    return content.substring(content.indexOf('\n') + 1)
+    return content.substring(this.cutPosition(content) + 1)
+  }
+
+  cutPosition = (content) => {
+    return content.indexOf('\n', content.indexOf('\n') + 1)
   }
 
   handleMenuClick = event => {
@@ -59,35 +63,38 @@ class MusicItem extends Component {
   }
 
   render = () => {
-    const { classes, music, onSave } = this.props;
+    const { classes, music, onSave, user } = this.props;
     const { menuElement } = this.state;
+
+    let editMusic;
+    if (user && user.canEdit())
+      editMusic = (<div>
+      <IconButton
+        aria-owns={menuElement ? 'simple-menu' : null}
+        aria-haspopup="true"
+        onClick={this.handleMenuClick}>
+        <MoreVert />
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={menuElement}
+        open={Boolean(menuElement)}
+        onClose={this.handleMenuClose}
+      >
+        <MenuItem>
+          <MusicEditor
+            onSave={onSave}
+            onClose={this.handleMenuClose}
+            music={music} />
+        </MenuItem>
+      </Menu>
+    </div>)
 
     return (
       <div>
         <Card className={classes.card}>
-          <CardHeader action={
-            <div>
-              <IconButton
-                aria-owns={menuElement ? 'simple-menu' : null}
-                aria-haspopup="true"
-                onClick={this.handleMenuClick}>
-                <MoreVert />
-              </IconButton>
-              <Menu
-                id="simple-menu"
-                anchorEl={menuElement}
-                open={Boolean(menuElement)}
-                onClose={this.handleMenuClose}
-              >
-                <MenuItem>
-                  <MusicEditor
-                    onSave={onSave}
-                    onClose={this.handleMenuClose}
-                    music={music} />
-                </MenuItem>
-              </Menu>
-            </div>
-          }
+          <CardHeader 
+            action={editMusic}
             title={music.name}
             subheader={"Tocada " + (music.times || 0) + " vezes"} />
           <CardContent className={classes.cardContent}>

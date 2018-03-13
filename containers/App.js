@@ -18,7 +18,8 @@ class App extends Component {
 
     this.data = new MusicData();
 
-    account((token, user) => {
+    account(this.data, (user) => {
+      this.setState({ user })
       this.loadMusics();
     })
   }
@@ -66,12 +67,25 @@ class App extends Component {
 
   render() {
     const { todos, actions } = this.props;
+
+    if (!this.state.user)
+      return <div>Carregando</div>
+
+    if (this.state.user && !this.state.user.canRead())
+      return <div>Você não tem acesso a esse sistema</div>
+
     return (
       <div>
         <MuiThemeProvider theme={theme}>
           <div>
-            <Header onSave={this.addMusic} onSearch={this.filterMusicList} />
-            <MusicList musics={this.state.filteredMusic || []} onSave={this.editMusic} />
+            <Header 
+              onSave={this.addMusic} 
+              onSearch={this.filterMusicList} 
+              user={this.state.user} />
+            <MusicList 
+              musics={this.state.filteredMusic || []} 
+              onSave={this.editMusic} 
+              user={this.state.user} />
           </div>
         </MuiThemeProvider>
       </div>

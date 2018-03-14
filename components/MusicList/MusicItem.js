@@ -3,12 +3,15 @@ import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Menu, { MenuItem } from 'material-ui/Menu';
-import { Typography, IconButton, Collapse, CardHeader } from 'material-ui'
-import { Favorite, Layers, LayersClear, ExpandMore, MoreVert } from 'material-ui-icons'
+import { Typography, IconButton, Collapse, CardHeader, Badge } from 'material-ui'
+import { Favorite, Layers, LayersClear, ExpandMore, MoreVert, Whatshot } from 'material-ui-icons'
 import classnames from 'classnames'
 import MusicEditor from '../MusicEditor'
 
 const styles = theme => ({
+  margin: {
+    margin: theme.spacing.unit * 2,
+  },
   card: {
     marginTop: 30,
     maxWidth: 350
@@ -63,37 +66,37 @@ class MusicItem extends Component {
   }
 
   render = () => {
-    const { classes, music, onSave, user } = this.props;
+    const { classes, music, onSave, user, event } = this.props;
     const { menuElement } = this.state;
 
     let editMusic;
     if (user && user.canEdit())
       editMusic = (<div>
-      <IconButton
-        aria-owns={menuElement ? 'simple-menu' : null}
-        aria-haspopup="true"
-        onClick={this.handleMenuClick}>
-        <MoreVert />
-      </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={menuElement}
-        open={Boolean(menuElement)}
-        onClose={this.handleMenuClose}
-      >
-        <MenuItem>
-          <MusicEditor
-            onSave={onSave}
-            onClose={this.handleMenuClose}
-            music={music} />
-        </MenuItem>
-      </Menu>
-    </div>)
+        <IconButton
+          aria-owns={menuElement ? 'simple-menu' : null}
+          aria-haspopup="true"
+          onClick={this.handleMenuClick}>
+          <MoreVert />
+        </IconButton>
+        <Menu
+          id="simple-menu"
+          anchorEl={menuElement}
+          open={Boolean(menuElement)}
+          onClose={this.handleMenuClose}
+        >
+          <MenuItem>
+            <MusicEditor
+              onSave={onSave}
+              onClose={this.handleMenuClose}
+              music={music} />
+          </MenuItem>
+        </Menu>
+      </div>)
 
     return (
       <div>
         <Card className={classes.card}>
-          <CardHeader 
+          <CardHeader
             action={editMusic}
             title={music.name}
             subheader={"Tocada " + (music.times || 0) + " vezes"} />
@@ -110,14 +113,15 @@ class MusicItem extends Component {
             </Collapse>
           </CardContent>
           <CardActions>
-            <IconButton>
+            {event && <IconButton>
               <Favorite />
-            </IconButton>
-            <IconButton>
-              {music.hasTransparency 
-                ? <Layers /> 
-                : <LayersClear />}
-            </IconButton>
+            </IconButton>}
+            {music.hasTransparency
+              ? <Layers />
+              : <LayersClear />}
+            {event && <Badge className={classes.margin} badgeContent={4} color="primary">
+              <Whatshot color="secondary" />
+            </Badge>}
             <IconButton
               className={classnames(classes.expand, {
                 [classes.expandOpen]: this.state.expanded,

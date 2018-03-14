@@ -20,7 +20,8 @@ class App extends Component {
 
     account(this.data, (user) => {
       this.setState({ user })
-      this.loadMusics();
+      this.loadMusics()
+      this.loadActiveEvent()
     })
   }
 
@@ -32,6 +33,12 @@ class App extends Component {
       musics: musicList,
       filteredMusic: musicList
     });
+  }
+
+  loadActiveEvent = async () => {
+    const activeEvent = await this.data.getActiveEvent()
+
+    this.setState({ activeEvent });
   }
 
   addMusic = async (music) => {
@@ -85,7 +92,8 @@ class App extends Component {
             <MusicList 
               musics={this.state.filteredMusic || []} 
               onSave={this.editMusic} 
-              user={this.state.user} />
+              user={this.state.user} 
+              event={this.state.activeEvent} />
           </div>
         </MuiThemeProvider>
       </div>

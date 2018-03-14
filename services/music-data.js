@@ -16,6 +16,23 @@ class MusicData {
         this.db = firebase.firestore()
         this.musicCollection = this.db.collection('musics')
         this.userCollection = this.db.collection('users')
+        this.eventCollection = this.db.collection('events')
+    }
+
+    getActiveEvent = async () => {
+        try {
+            const events = await this.eventCollection.get()
+            const result = []
+
+            events.forEach((doc) => {
+                result.push(Object.assign({}, doc.data(), { id: doc.id }))
+            })
+
+            return result.filter(event => event.active)[0]
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
     getUser = async (id) => {

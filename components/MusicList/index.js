@@ -10,7 +10,7 @@ const styles = theme => ({
   })
 
 const MusicList = (props) => {
-    const  { classes, musics, user } = props
+    const  { classes, musics, user, event } = props
 
     if (!musics || musics.length == 0)
         return <div>Carregando...</div>
@@ -21,7 +21,8 @@ const MusicList = (props) => {
                 key={music.id} 
                 music={music} 
                 onSave={props.onSave}
-                user={user} />
+                user={user} 
+                event={event} />
         )
     })
 

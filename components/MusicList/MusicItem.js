@@ -69,6 +69,8 @@ class MusicItem extends Component {
     const { classes, music, onSave, user, event } = this.props;
     const { menuElement } = this.state;
 
+    const eventEnabled = event && user && user.canVote()
+
     let editMusic;
     if (user && user.canEdit())
       editMusic = (<div>
@@ -113,13 +115,13 @@ class MusicItem extends Component {
             </Collapse>
           </CardContent>
           <CardActions>
-            {event && <IconButton>
+            {eventEnabled && <IconButton>
               <Favorite />
             </IconButton>}
             {music.hasTransparency
               ? <Layers />
               : <LayersClear />}
-            {event && <Badge className={classes.margin} badgeContent={4} color="primary">
+            {eventEnabled && <Badge className={classes.margin} badgeContent={4} color="primary">
               <Whatshot color="secondary" />
             </Badge>}
             <IconButton

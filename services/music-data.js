@@ -38,8 +38,31 @@ class MusicData {
     getUser = async (id) => {
         try {
             const user = await this.userCollection.doc(id).get()
+            const userData = user.data()
 
-                return user.data() || {}
+            if (userData)
+                return Object.assign({}, userData, { id })
+
+            return undefined
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    addUser = async (email, displayName, photoURL) => {
+        try {
+            const user = {
+                email, 
+                displayName, 
+                photoURL,
+                admin: false,
+                author: false,
+                reader: false
+            }
+
+            const added = await this.userCollection.doc(email).set(user)
+            return Object.assign({}, user, { id: email })
         }
         catch (err) {
             console.log(err)

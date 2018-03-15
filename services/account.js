@@ -1,5 +1,25 @@
 import firebase from 'firebase'
 
+const connectWithUser = (user, dbUser, onConnect) => {
+    const result = Object.assign({}, 
+        dbUser, 
+        { displayName: user.displayName, photoURL: user.photoURL })
+
+    result.canEdit = () => {
+        return dbUser && (dbUser.admin || dbUser.author)
+    }
+    
+    result.canRead = () => {
+        return dbUser //&& (dbUser.admin || dbUser.author || dbUser.reader)
+    }
+
+    result.canVote = () => {
+        return dbUser && (dbUser.admin || dbUser.author || dbUser.reader)
+    }
+
+    onConnect(result)
+}
+
 export default (db, onConnect) => {
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().languageCode = 'pt_BR';
@@ -10,23 +30,10 @@ export default (db, onConnect) => {
             const user = result.user;
 
             db.getUser(user.email).then(dbUser => {
-                const result = Object.assign({}, 
-                    dbUser, 
-                    { displayName: user.displayName, photoURL: user.photoURL })
-
-                result.canEdit = () => {
-                    return dbUser && (dbUser.admin || dbUser.author)
-                }
-                
-                result.canRead = () => {
-                    return dbUser //&& (dbUser.admin || dbUser.author || dbUser.reader)
-                }
-
-                result.canVote = () => {
-                    return dbUser && (dbUser.admin || dbUser.author || dbUser.reader)
-                }
-
-                onConnect(result)
+                if (!dbUser)
+                    db.addUser(user.email, user.displayName, user.photoURL).then(newDbUser => connectWithUser(user, newDbUser, onConnect))
+                else
+                    connectWithUser(user, dbUser, onConnect)
             })
         })
         .catch(function (error) {

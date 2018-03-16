@@ -21,6 +21,7 @@ const MusicList = (props) => {
                 key={music.id} 
                 music={music} 
                 onSave={props.onSave}
+                onVote={props.onVote}
                 user={user} 
                 event={event} />
         )

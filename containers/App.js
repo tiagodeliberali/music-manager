@@ -60,6 +60,11 @@ class App extends Component {
 
     this.filterMusicList(this.state.term)
   }
+  
+  favoriteMusic = async (event, music, user) => {
+    await this.data.favoriteMusic(event, music, user)
+    await this.loadActiveEvent()
+  }
 
   filterMusicList = (term) => {
     const lowerTerm = (term || '').toLowerCase()
@@ -92,6 +97,7 @@ class App extends Component {
             <MusicList 
               musics={this.state.filteredMusic || []} 
               onSave={this.editMusic} 
+              onVote={this.favoriteMusic}
               user={this.state.user} 
               event={this.state.activeEvent} />
           </div>

@@ -1,6 +1,21 @@
 import firebase from 'firebase'
 require('firebase/firestore')
 
+class ActiveEvent {
+    constructor(eventMusic) {
+        if (eventMusic && eventMusic.votes)
+            this.votes = eventMusic.votes
+        else
+            this.votes = []
+    }
+
+    countVotes = () => { return this.votes.length }
+
+    hasVotes = () => { return this.votes.length > 0  }
+
+    votedBy = (userId) => { return  this.votes.find(item => item == userId) != undefined }
+}
+
 class MusicData {
     constructor() {
         var config = {
@@ -28,7 +43,52 @@ class MusicData {
                 result.push(Object.assign({}, doc.data(), { id: doc.id }))
             })
 
-            return result.filter(event => event.active)[0]
+            const activeEvent = result.filter(event => event.active)[0]
+
+            const musics = await this.getMusicsFromEvent(activeEvent)
+
+            activeEvent.getDetails = (musicId) => { return new ActiveEvent((musics || []).find(music => music.id == musicId)) }
+
+            return activeEvent;
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    getMusicsFromEvent = async (event) => {
+        try {
+            const musicList = await this.eventCollection.doc(event.id).collection('musics').get()
+            const result = []
+
+            musicList.forEach((doc) => {
+                result.push(Object.assign({}, doc.data(), { id: doc.id }))
+            })
+
+            return result
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    favoriteMusic = async (event, music, user) => {
+        try {
+            const eventMusicCollection = this.eventCollection.doc(event.id).collection('musics')
+            const eventMusic = await eventMusicCollection.doc(music.id).get()
+            const eventMusicData = eventMusic.data()
+
+            if (!eventMusicData)
+                await eventMusicCollection.doc(music.id).set({ name: music.name, votes: [user.id] })
+            else {
+                const votes = eventMusicData.votes || [];
+
+                if (votes.find(vote => vote == user.id)) 
+                    await eventMusicCollection.doc(music.id).set({ name: music.name, votes: votes.filter(vote => vote != user.id) })
+                else
+                    await eventMusicCollection.doc(music.id).set({ name: music.name, votes: votes.concat(user.id) })
+            }
+
         }
         catch (err) {
             console.log(err)

@@ -39,6 +39,8 @@ class MusicItem extends Component {
 
   constructor(props) {
     super(props)
+
+    this.onVote = this.props.onVote;
   }
 
   handleExpandClick = () => {
@@ -66,8 +68,12 @@ class MusicItem extends Component {
   }
 
   render = () => {
-    const { classes, music, onSave, user, event } = this.props;
+    const { classes, onSave, onVote, user, event, music } = this.props;
     const { menuElement } = this.state;
+
+    let eventDetails = {}
+    if (event) 
+      eventDetails = event.getDetails(music.id)
 
     const eventEnabled = event && user && user.canVote()
 
@@ -116,12 +122,14 @@ class MusicItem extends Component {
           </CardContent>
           <CardActions>
             {eventEnabled && <IconButton>
-              <Favorite />
+              {eventDetails.votedBy(user.id) 
+                ? <Favorite onClick={() => this.onVote(event, music, user)} color="secondary" />
+                : <Favorite onClick={() => this.onVote(event, music, user)} />}              
             </IconButton>}
             {music.hasTransparency
               ? <Layers />
               : <LayersClear />}
-            {eventEnabled && <Badge className={classes.margin} badgeContent={4} color="primary">
+            {eventEnabled && eventDetails.hasVotes() && <Badge className={classes.margin} badgeContent={eventDetails.countVotes()} color="primary">
               <Whatshot color="secondary" />
             </Badge>}
             <IconButton

@@ -1,4 +1,5 @@
 {
+  "commentario_phillipe": "// recomendo extender dois caras: 'eslint:recommended' e 'airbnb-base'",
   "env": {
     "es6": true,
     "browser": true,

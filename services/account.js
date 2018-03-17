@@ -21,7 +21,8 @@ const connectWithUser = (user, dbUser, onConnect) => {
 }
 
 export default (db, onConnect) => {
-    var provider = new firebase.auth.FacebookAuthProvider();
+    // var n eh legal, const ou let. https://eslint.org/docs/rules/no-var
+    const provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().languageCode = 'pt_BR';
 
     firebase.auth().signInWithPopup(provider)

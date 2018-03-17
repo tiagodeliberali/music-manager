@@ -16,6 +16,9 @@ function Header(props) {
   const { classes, onSearch, user } = props;
 
   let avatar;
+
+  // Esse tipo de if eh desencorajado em react/redux, o ideal seria ter um valor default de user na store,
+  // o component teria o minimo de logica possivel, só renderiza o que recebe bomo props.
   if (user)
     avatar = <Avatar className={classes.button} alt={user.displayName} src={user.photoURL} />
 
@@ -39,6 +42,7 @@ function Header(props) {
   );
 }
 
+// nao tinha visto que voce ja estava usando :p
 Header.propTypes = {
   classes: PropTypes.object.isRequired
 };

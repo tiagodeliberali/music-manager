@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from "react"
+import React, { Component } from "react"
+import * as PropTypes from "prop-types";
+// Esse proptypes eh a maneira JS de fazer static type checking, com typescript a gente não precisa, mas sem ts, eh legal usar.
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import theme from '../src/material_ui_raw_theme_file'
@@ -28,6 +30,8 @@ class App extends Component {
   loadMusics = async () => {
     const musicList = await this.data.get()
 
+    // Tiago, quanto mais usarmos state local dos componentes, menos vamos aproveitar os benefícios do redux,
+    // em apps no 5a eu sempre pego no pé dos meninos para usar state local só em components, não em containers.
     this.setState({
       term: '',
       musics: musicList,
@@ -41,6 +45,10 @@ class App extends Component {
     this.setState({ activeEvent });
   }
 
+  // Esses callbacks async await resolvem o problema, mas vc perde o 'tracking' do redux,
+  // A ideia eh que cada ação dessas seja registrada na store. Pq? essas coisas tendem a ficar
+  // complexas com o tempo, e reproduzir bugs eh um parto, o redux te permite 'voltar no tempo', 
+  // dar forward e rewind nas ações, mas desde que vc use as actions para isso.
   addMusic = async (music) => {
     const added = await this.data.add(musicBuilder(music))
 
@@ -97,7 +105,7 @@ class App extends Component {
             <MusicList 
               musics={this.state.filteredMusic || []} 
               onSave={this.editMusic} 
-              onVote={this.favoriteMusic}
+              onVote={this.actionsfavoriteMusic}
               user={this.state.user} 
               event={this.state.activeEvent} />
           </div>
@@ -105,6 +113,11 @@ class App extends Component {
       </div>
     );
   }
+}
+
+// Exemplo:
+App.PropTypes = {
+  actions: PropTypes.array
 }
 
 export default App;

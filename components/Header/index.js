@@ -8,7 +8,8 @@ import MusicEditor from '../MusicEditor'
 
 const styles = () => ({
   button: {
-    marginLeft: 50
+    marginLeft: 30,
+    marginRigth: 5
   }
 });
 
@@ -16,10 +17,6 @@ function Header(props) {
   const {
     classes, onSearch, onSave, user
   } = props;
-
-  let avatar;
-  if (user)
-    avatar = <Avatar className={classes.button} alt={user.displayName} src={user.photoURL} />
 
   let editMusic;
   if (user && user.canEdit())
@@ -34,7 +31,7 @@ function Header(props) {
           </IconButton>
           <SearchBar onSearch={onSearch} />
           {editMusic}
-          {avatar}
+          <Avatar className={classes.button} alt={user.displayName} src={user.photoURL} />
         </Toolbar>
       </AppBar>
     </header>

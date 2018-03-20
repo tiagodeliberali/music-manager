@@ -95,7 +95,7 @@ class MusicItem extends Component {
           <CardHeader
             action={editMusic}
             title={music.name}
-          subheader={ `Tocada $(music.times || 0) vezes` } />
+          subheader={ `Tocada ${music.times || 0} vezes` } />
           <CardContent className={classes.cardContent}>
             <Typography variant="headline" component="h2">
             </Typography>

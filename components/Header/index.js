@@ -13,11 +13,9 @@ const styles = () => ({
   }
 });
 
-function Header(props) {
-  const {
-    classes, onSearch, onSave, user
-  } = props;
-
+function Header({
+  classes, onSearch, onSave, user
+}) {
   let editMusic;
   if (user && user.canEdit())
     editMusic = <MusicEditor onSave={onSave} />

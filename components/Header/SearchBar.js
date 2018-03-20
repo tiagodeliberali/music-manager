@@ -10,24 +10,24 @@ class SearchBar extends Component {
     this.state = { term: '' }
   }
 
-    searchMusic = (event) => {
-      const term = event.target.value
-      this.setState({ term })
-      this.onSearch(term)
-    }
+  searchMusic = (event) => {
+    const term = event.target.value
+    this.setState({ term })
+    this.onSearch(term)
+  }
 
-    render() {
-      return (
-            <Input
-                placeholder="Buscar música"
-                value={this.state.term}
-                onChange={this.searchMusic}
-                inputProps={{
-                    'aria-label': 'Description'
-                }}
-            />
-      )
-    }
+  render() {
+    return (
+      <Input
+        placeholder="Buscar música"
+        value={this.state.term}
+        onChange={this.searchMusic}
+        inputProps={{
+            'aria-label': 'Description'
+        }}
+      />
+    )
+  }
 }
 
 SearchBar.propTypes = {

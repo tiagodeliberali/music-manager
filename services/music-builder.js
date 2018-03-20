@@ -1,14 +1,14 @@
 export default (music) => {
-    let result = {
-        id: music.id,
-        name: music.name,
-        lyrics: music.lyrics,
-        youtube: music.youtube,
-        hasTransparency: music.hasTransparency
-    }
+  const result = {
+    id: music.id,
+    name: music.name,
+    lyrics: music.lyrics,
+    youtube: music.youtube,
+    hasTransparency: music.hasTransparency
+  }
 
-    if (!result.id)
-        delete result.id
+  if (!result.id)
+    delete result.id
 
-    return result
+  return result
 }

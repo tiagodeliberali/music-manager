@@ -1,93 +1,102 @@
-import React, { PropTypes, Component } from 'react'
-import { TextField, FormControlLabel, Switch, Button, Tooltip } from 'material-ui'
-import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle } from 'material-ui/Dialog'
-import { withStyles } from 'material-ui/styles'
-import { Add, Edit } from 'material-ui-icons'
-import musicBuilder from '../../services/music-builder'
+import React, { Component } from 'react';
+import * as PropTypes from "prop-types";
+import { TextField, FormControlLabel, Switch, Button, Tooltip } from 'material-ui';
+import Dialog, { DialogActions, DialogContent, DialogTitle } from 'material-ui/Dialog';
+import { withStyles } from 'material-ui/styles';
+import { Add } from 'material-ui-icons';
+import musicBuilder from '../../services/music-builder';
 
-const styles = theme => ({
-    button: {
-        marginLeft: 50
-    }
+const styles = () => ({
+  button: {
+    marginLeft: 50
+  }
 });
 
 class AddMusic extends Component {
     emptyState = {
-        open: false,
-        name: '',
-        lyrics: '',
-        youtube: '',
-        hasTransparency: ''
+      open: false,
+      name: '',
+      lyrics: '',
+      youtube: '',
+      hasTransparency: ''
     }
 
     constructor(props) {
-        super(props)
-        this.classes = props.classes
-        this.onSave = props.onSave
-        this.onClose = props.onClose || this.emptyFunction
-        this.loadInitialState()
+      super(props);
+      /* eslint-disable react/prop-types */
+      this.onClose = props.onClose || this.emptyFunction;
+      /* eslint-disable react/prop-types */
+
+      this.classes = props.classes;
+      this.onSave = props.onSave;
     }
 
     emptyFunction = () => { }
 
     loadInitialState = () => {
-        if (this.props.music)
-            this.state = Object.assign({},
-                this.emptyState,
-                musicBuilder(this.props.music))
-        else
-            this.state = { ...this.emptyState }
+      /* eslint-disable react/prop-types */
+      const musicList = this.props.music
+      /* eslint-disable react/prop-types */
+
+      if (musicList)
+        this.setState(Object.assign(
+          {},
+          this.emptyState,
+          musicBuilder(this.props.music)
+        ))
+      else
+        this.setState({ ...this.emptyState })
     }
 
     clearState = () => {
-        if (this.editMode())
-            this.setState({ open: false })
-        else
-            this.setState({ ...this.emptyState })
+      if (this.editMode())
+        this.setState({ open: false });
+      else
+        this.setState({ ...this.emptyState });
     }
 
     handleClickOpen = () => {
-        this.setState({ open: true })
+      this.setState({ open: true });
     }
 
     handleNameChange = (event) => {
-        this.setState({ name: event.target.value })
+      this.setState({ name: event.target.value });
     }
 
     handleLyricsChange = (event) => {
-        this.setState({ lyrics: event.target.value })
+      this.setState({ lyrics: event.target.value });
     }
 
     handleYoutubeChange = (event) => {
-        this.setState({ youtube: event.target.value })
+      this.setState({ youtube: event.target.value });
     }
 
     handleHasTransparencyChange = (event) => {
-        this.setState({ hasTransparency: event.target.checked })
+      this.setState({ hasTransparency: event.target.checked });
     }
 
-    editMode = () => {
-        return this.props.music != undefined
-    }
+    editMode = () => this.props.music !== undefined
 
     handleSave = () => {
-        this.onSave(musicBuilder(this.state))
-        this.clearState()
-        this.onClose()
+      this.onSave(musicBuilder(this.state));
+      this.clearState();
+      this.onClose();
     }
 
     handleClose = () => {
-        this.clearState()
-        this.onClose()
+      this.clearState();
+      this.onClose();
     }
 
-    isValid = () => {
-        return this.state.name.trim() != ""
-            && this.state.lyrics.trim() != ""
+    isValid = () => this.state.name.trim() !== ""
+            && this.state.lyrics.trim() !== ""
+
+    componentWillMount = () => {
+      this.loadInitialState();
     }
 
     render() {
-        return (
+      return (
             <div>
                 {this.editMode()
                     ? (<Button
@@ -165,12 +174,13 @@ class AddMusic extends Component {
                     </DialogActions>
                 </Dialog>
             </div>
-        )
+      );
     }
 }
 
 AddMusic.propTypes = {
-    classes: PropTypes.object.isRequired
-}
+  classes: PropTypes.object.isRequired,
+  onSave: PropTypes.func.isRequired
+};
 
 export default withStyles(styles)(AddMusic)

@@ -1,41 +1,48 @@
-import React, { PropTypes } from "react"
+import React from 'react';
+import * as PropTypes from "prop-types";
 import { withStyles } from 'material-ui/styles'
 import MusicItem from './MusicItem'
 
-const styles = theme => ({
-    list: {
-      padding: 30,
-      paddingTop: 0
-    }
-  })
+const styles = () => ({
+  list: {
+    padding: 30,
+    paddingTop: 0
+  }
+});
 
-const MusicList = (props) => {
-    const  { classes, musics, user, event } = props
+const MusicList = ({
+  classes, musics, user,
+  /* eslint-disable react/prop-types */
+  event,
+  /* eslint-disable react/prop-types */
+  onSave, onVote
+}) => {
+  if (!musics || musics.length === 0)
+    return <div>Carregando...</div>;
 
-    if (!musics || musics.length == 0)
-        return <div>Carregando...</div>
-
-    const items = musics.map(music => {
-        return (
-            <MusicItem 
-                key={music.id} 
-                music={music} 
-                onSave={props.onSave}
-                onVote={props.onVote}
-                user={user} 
+  const items = musics.map(music => (
+            <MusicItem
+                key={music.id}
+                music={music}
+                onSave={onSave}
+                onVote={onVote}
+                user={user}
                 event={event} />
-        )
-    })
+  ));
 
-    return (
+  return (
         <ul className={classes.list}>
-            {items}            
+            {items}
         </ul>
-    )
-}
+  );
+};
 
 MusicList.propTypes = {
-    musics: PropTypes.array.isRequired
+  classes: PropTypes.object.isRequired,
+  musics: PropTypes.array.isRequired,
+  onVote: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(MusicList)
+export default withStyles(styles)(MusicList);

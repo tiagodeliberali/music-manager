@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import * as PropTypes from "prop-types";
 import { withStyles } from 'material-ui/styles'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Menu, { MenuItem } from 'material-ui/Menu';
@@ -10,7 +10,7 @@ import MusicEditor from '../MusicEditor'
 
 const styles = theme => ({
   margin: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2
   },
   card: {
     marginTop: 30,
@@ -22,13 +22,13 @@ const styles = theme => ({
   expand: {
     transform: 'rotate(0deg)',
     transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
+      duration: theme.transitions.duration.shortest
     }),
-    marginLeft: 'auto',
+    marginLeft: 'auto'
   },
   expandOpen: {
-    transform: 'rotate(180deg)',
-  },
+    transform: 'rotate(180deg)'
+  }
 })
 
 class MusicItem extends Component {
@@ -37,42 +37,30 @@ class MusicItem extends Component {
     menuElement: null
   }
 
-  constructor(props) {
-    super(props)
+  handleExpandClick = () => this.setState({ expanded: !this.state.expanded })
 
-    this.onVote = this.props.onVote;
-  }
+  firstLines = content => content.substring(0, this.cutPosition(content))
 
-  handleExpandClick = () => {
-    this.setState({ expanded: !this.state.expanded });
-  }
+  otherLines = content => content.substring(this.cutPosition(content) + 1)
 
-  firstLines = (content) => {
-    return content.substring(0, this.cutPosition(content))
-  }
+  cutPosition = content => content.indexOf('\n', content.indexOf('\n') + 1)
 
-  otherLines = (content) => {
-    return content.substring(this.cutPosition(content) + 1)
-  }
+  handleMenuClick = event => this.setState({ menuElement: event.currentTarget })
 
-  cutPosition = (content) => {
-    return content.indexOf('\n', content.indexOf('\n') + 1)
-  }
-
-  handleMenuClick = event => {
-    this.setState({ menuElement: event.currentTarget });
-  }
-
-  handleMenuClose = () => {
-    this.setState({ menuElement: null });
-  }
+  handleMenuClose = () => this.setState({ menuElement: null })
 
   render = () => {
-    const { classes, onSave, onVote, user, event, music } = this.props;
+    const {
+      classes, onSave, onVote, user,
+      /* eslint-disable react/prop-types */
+      event,
+      /* eslint-disable react/prop-types */
+      music
+    } = this.props;
     const { menuElement } = this.state;
 
     let eventDetails = {}
-    if (event) 
+    if (event)
       eventDetails = event.getDetails(music.id)
 
     const eventEnabled = event && user && user.canVote()
@@ -107,7 +95,7 @@ class MusicItem extends Component {
           <CardHeader
             action={editMusic}
             title={music.name}
-            subheader={"Tocada " + (music.times || 0) + " vezes"} />
+          subheader={ `Tocada $(music.times || 0) vezes` } />
           <CardContent className={classes.cardContent}>
             <Typography variant="headline" component="h2">
             </Typography>
@@ -122,9 +110,9 @@ class MusicItem extends Component {
           </CardContent>
           <CardActions>
             {eventEnabled && <IconButton>
-              {eventDetails.votedBy(user.id) 
-                ? <Favorite onClick={() => this.onVote(event, music, user)} color="secondary" />
-                : <Favorite onClick={() => this.onVote(event, music, user)} />}              
+              {eventDetails.votedBy(user.id)
+                ? <Favorite onClick={() => onVote(event, music, user)} color="secondary" />
+                : <Favorite onClick={() => onVote(event, music, user)} />}
             </IconButton>}
             {music.hasTransparency
               ? <Layers />
@@ -134,7 +122,7 @@ class MusicItem extends Component {
             </Badge>}
             <IconButton
               className={classnames(classes.expand, {
-                [classes.expandOpen]: this.state.expanded,
+                [classes.expandOpen]: this.state.expanded
               })}
               onClick={this.handleExpandClick}
               aria-expanded={this.state.expanded}
@@ -151,7 +139,10 @@ class MusicItem extends Component {
 
 MusicItem.propTypes = {
   classes: PropTypes.object.isRequired,
-  music: PropTypes.object.isRequired
+  music: PropTypes.object.isRequired,
+  onVote: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 }
 
 export default withStyles(styles)(MusicItem)

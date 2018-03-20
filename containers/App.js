@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react"
+import React, { Component } from "react"
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import theme from '../src/material_ui_raw_theme_file'
@@ -52,15 +52,15 @@ class App extends Component {
   }
 
   editMusic = async (music) => {
-    const updated = await this.data.update(musicBuilder(music))
+    await this.data.update(musicBuilder(music))
 
     this.setState({
-      musics: this.state.musics.map(item => item.id === music.id ? music : item)
+      musics: this.state.musics.map(item => (item.id === music.id ? music : item))
     })
 
     this.filterMusicList(this.state.term)
   }
-  
+
   favoriteMusic = async (event, music, user) => {
     await this.data.favoriteMusic(event, music, user)
     await this.loadActiveEvent()
@@ -70,16 +70,14 @@ class App extends Component {
     const lowerTerm = (term || '').toLowerCase()
 
     this.setState({
-      term: term,
+      term,
       filteredMusic: this.state.musics.filter(music =>
-        (music.name || '').toLowerCase().indexOf(lowerTerm) > -1 
+        (music.name || '').toLowerCase().indexOf(lowerTerm) > -1
         || (music.lyrics || '').toLowerCase().indexOf(lowerTerm) > -1)
     })
   }
 
   render() {
-    const { todos, actions } = this.props;
-
     if (!this.state.user)
       return <div>Carregando</div>
 
@@ -90,15 +88,15 @@ class App extends Component {
       <div>
         <MuiThemeProvider theme={theme}>
           <div>
-            <Header 
-              onSave={this.addMusic} 
-              onSearch={this.filterMusicList} 
+            <Header
+              onSave={this.addMusic}
+              onSearch={this.filterMusicList}
               user={this.state.user} />
-            <MusicList 
-              musics={this.state.filteredMusic || []} 
-              onSave={this.editMusic} 
+            <MusicList
+              musics={this.state.filteredMusic || []}
+              onSave={this.editMusic}
               onVote={this.favoriteMusic}
-              user={this.state.user} 
+              user={this.state.user}
               event={this.state.activeEvent} />
           </div>
         </MuiThemeProvider>

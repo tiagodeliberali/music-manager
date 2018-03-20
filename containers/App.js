@@ -13,7 +13,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      musics: []
+      musics: [],
+      user: {}
     }
 
     this.data = new MusicData();

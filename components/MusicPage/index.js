@@ -1,17 +1,17 @@
-import React from 'react';
-import * as PropTypes from "prop-types";
+import React from 'react'
+import * as PropTypes from "prop-types"
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import theme from '../../src/material_ui_raw_theme_file'
 import Header from '../Header'
 import MusicList from '../MusicList'
 
 const MusicPage = ({
-  musicList, user, activeEvent, onSearch, onAddMusic, onUpdateMusic, onVote
+  musics, filteredMusics, user, activeEvent, onSearch, onAddMusic, onUpdateMusic, onVote
 }) => {
-  if (!this.state.user)
+  if (!user)
     return <div>Carregando...</div>
 
-  if (this.state.user && !this.state.user.canRead())
+  if (user && !user.canRead())
     return <div>Você não tem acesso a esse sistema</div>
 
   return (
@@ -20,10 +20,10 @@ const MusicPage = ({
         <div>
           <Header
             onSave={onAddMusic}
-            onSearch={onSearch}
+            onSearch={onSearch(musics.list)}
             user={user} />
           <MusicList
-            musics={musicList || []}
+            musics={filteredMusics}
             onSave={onUpdateMusic}
             onVote={onVote}
             user={user}
@@ -31,15 +31,16 @@ const MusicPage = ({
         </div>
       </MuiThemeProvider>
     </div>
-  );
-};
+  )
+}
 
 MusicPage.propTypes = {
   onSearch: PropTypes.func.isRequired,
   onAddMusic: PropTypes.func.isRequired,
   onUpdateMusic: PropTypes.func.isRequired,
   onVote: PropTypes.func.isRequired,
-  musicList: PropTypes.array.isRequired,
+  musics: PropTypes.object.isRequired,
+  filteredMusics: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,
   activeEvent: PropTypes.object.isRequired
 }

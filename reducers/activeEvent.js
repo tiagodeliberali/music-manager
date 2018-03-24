@@ -17,7 +17,7 @@ export default function activeEvent(state = initialState, action) {
         }),
         finish: prevState => ({ ...prevState, isLoading: false }),
         failure: prevState => ({ ...prevState, error: payload }),
-        success: prevState => ({ ...prevState, payload }),
+        success: prevState => Object.assign({}, prevState, payload),
         always: prevState => prevState
       })
 

@@ -1,52 +1,54 @@
 import * as types from '../constants/ActionTypes'
 import musicBuilder from '../services/music-builder'
+import MusicData from '../services/music-data'
+import getUser from '../services/account'
 
-export function filterMusic(term, musics) {
-  return {
-    type: types.FILTER_MUSIC,
-    term,
-    musics
-  }
-}
+const data = new MusicData()
 
-export function getActiveEvent(data) {
+export const filterMusic = musics => term => ({
+  type: types.FILTER_MUSIC,
+  term,
+  musics
+})
+
+export function getActiveEvent() {
   return {
     type: types.GET_EVENT,
     promise: data.getActiveEvent()
   }
 }
 
-export function favoriteMusic(data, event, music, user) {
+export function favoriteMusic(event, music, user) {
   return {
     type: types.TOGGLE_FAVORITE,
     promise: data.favoriteMusic(event, music, user)
   }
 }
 
-export function addMusic(data) {
+export function addMusic(music) {
   return {
     type: types.GET_EVENT,
-    promise: data.add(musicBuilder(data.music))
+    promise: data.add(musicBuilder(music))
   }
 }
 
-export function editMusic(data) {
+export function editMusic(music) {
   return {
     type: types.GET_EVENT,
-    promise: data.update(musicBuilder(data.music))
+    promise: data.update(musicBuilder(music))
   }
 }
 
-export function loadMusics(musics) {
+export function loadMusics() {
   return {
     type: types.GET_MUSICS,
-    musics
+    promise: data.get()
   }
 }
 
-export function user(data) {
+export function login() {
   return {
     type: types.LOGIN_USER,
-    promise: data.login()
+    promise: getUser(data)
   }
 }

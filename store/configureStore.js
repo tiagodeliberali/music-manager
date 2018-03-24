@@ -8,14 +8,14 @@ export default function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
-    composeEnhancers(applyMiddleware(...reduxPackMiddleware))
+    composeEnhancers(applyMiddleware(reduxPackMiddleware))
   )
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('../reducers', () => {
       const nextReducer = rootReducer
-      store.replaceReducer(nextReducer);
+      store.replaceReducer(nextReducer)
     });
   }
 

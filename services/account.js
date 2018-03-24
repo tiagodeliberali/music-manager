@@ -8,9 +8,7 @@ const buildUser = (user, dbUser) => {
   )
 
   result.canEdit = () => dbUser && (dbUser.admin || dbUser.author)
-
-  result.canRead = () => dbUser // && (dbUser.admin || dbUser.author || dbUser.reader)
-
+  result.canRead = () => !!dbUser // && (dbUser.admin || dbUser.author || dbUser.reader)
   result.canVote = () => dbUser && (dbUser.admin || dbUser.author || dbUser.reader)
 
   return result
@@ -21,7 +19,7 @@ export default async (db) => {
     const provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().languageCode = 'pt_BR';
 
-    const user = await firebase.auth().signInWithRedirect(provider)
+    const { user } = await firebase.auth().signInWithPopup(provider)
     const dbUser = await db.getUser(user.email)
 
     if (!dbUser) {

@@ -46,10 +46,10 @@ class MusicData {
 
         const activeEvent = result.filter(event => event.active)[0]
 
-        const musics = await this.getMusicsFromEvent(activeEvent)
+        activeEvent.musics = await this.getMusicsFromEvent(activeEvent)
 
         activeEvent.getDetails = musicId =>
-          new ActiveEvent((musics || []).find(music => music.id === musicId))
+          new ActiveEvent((this.musics || []).find(music => music.id === musicId))
 
         return activeEvent;
       } catch (err) {

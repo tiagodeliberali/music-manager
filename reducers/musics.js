@@ -1,5 +1,5 @@
 import { handle } from 'redux-pack'
-import { ADD_MUSIC, UPDATE_MUSIC, GET_MUSICS } from '../constants/ActionTypes';
+import { ADD_MUSIC, UPDATE_MUSIC, GET_MUSICS, SNAPSHOT_MUSICS } from '../constants/ActionTypes';
 
 const initialState = {
   isLoading: false,
@@ -40,9 +40,12 @@ export default function todos(state = initialState, action) {
         }),
         finish: prevState => ({ ...prevState, isLoading: false }),
         failure: prevState => ({ ...prevState, error: payload }),
-        success: prevState => ({ ...prevState, list: payload }),
+        success: prevState => prevState,
         always: prevState => prevState
       })
+
+    case SNAPSHOT_MUSICS:
+      return Object.assign({}, state, { list: payload })
 
     default:
       return state;

@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import { UPDATE_EVENT, FILTER_MUSIC } from '../constants/ActionTypes'
+import { SNAPSHOT_EVENT, FILTER_MUSIC, SNAPSHOT_MUSICS } from '../constants/ActionTypes'
 
 require('firebase/firestore')
 
@@ -37,16 +37,16 @@ class MusicData {
         .collection('musics')
         .onSnapshot(async (musicList) => {
           const currentEvent = { id: activeEvent.id }
-          currentEvent.musics = await this.getMusicsFromEvent(musicList)
+          currentEvent.musics = this.getMusicsFromEvent(musicList)
 
-          dispatch({ type: UPDATE_EVENT, payload: currentEvent });
+          dispatch({ type: SNAPSHOT_EVENT, payload: currentEvent });
         })
     } catch (err) {
       console.log(err)
     }
   }
 
-  getMusicsFromEvent = async (musicList) => {
+  getMusicsFromEvent = (musicList) => {
     try {
       const result = []
 
@@ -117,20 +117,12 @@ class MusicData {
 
   get = async (dispatch) => {
     try {
-      const musicList = await this.musicCollection.get()
-      const result = []
+      this.musicCollection.onSnapshot(async (musicList) => {
+        const musics = this.getMusicsFromEvent(musicList)
 
-      musicList.forEach((doc) => {
-        result.push(Object.assign({}, doc.data(), { id: doc.id }))
+        dispatch({ type: SNAPSHOT_MUSICS, payload: musics })
+        dispatch({ type: FILTER_MUSIC, musics })
       })
-
-      dispatch({
-        type: FILTER_MUSIC,
-        term: '',
-        musics: result
-      })
-
-      return result
     } catch (err) {
       console.log(err)
     }

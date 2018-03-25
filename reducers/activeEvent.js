@@ -1,5 +1,5 @@
 import { handle } from 'redux-pack'
-import { GET_EVENT, UPDATE_EVENT, TOGGLE_FAVORITE } from '../constants/ActionTypes'
+import { GET_EVENT, SNAPSHOT_EVENT, TOGGLE_FAVORITE } from '../constants/ActionTypes'
 
 const initialState = {
   isLoading: false,
@@ -21,8 +21,8 @@ export default function activeEvent(state = initialState, action) {
         always: prevState => prevState
       })
 
-    case UPDATE_EVENT:
-      return payload
+    case SNAPSHOT_EVENT:
+      return Object.assign({}, state, payload)
 
     case TOGGLE_FAVORITE:
       return handle(state, action, {

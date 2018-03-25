@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import { UPDATE_EVENT } from '../constants/ActionTypes'
+import { UPDATE_EVENT, FILTER_MUSIC } from '../constants/ActionTypes'
 
 require('firebase/firestore')
 
@@ -115,13 +115,19 @@ class MusicData {
     }
   }
 
-  get = async () => {
+  get = async (dispatch) => {
     try {
       const musicList = await this.musicCollection.get()
       const result = []
 
       musicList.forEach((doc) => {
         result.push(Object.assign({}, doc.data(), { id: doc.id }))
+      })
+
+      dispatch({
+        type: FILTER_MUSIC,
+        term: '',
+        musics: result
       })
 
       return result

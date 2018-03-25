@@ -39,10 +39,10 @@ export function editMusic(music) {
   }
 }
 
-export function loadMusics() {
+export function loadMusics(dispatch) {
   return {
     type: types.GET_MUSICS,
-    promise: data.get()
+    promise: data.get(dispatch)
   }
 }
 

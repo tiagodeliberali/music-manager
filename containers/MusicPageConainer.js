@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => {
   // TODO: Move it to a proper place
   dispatch(actions.login())
-  dispatch(actions.loadMusics())
+  dispatch(actions.loadMusics(dispatch))
   dispatch(actions.getActiveEvent(dispatch))
 
   return {

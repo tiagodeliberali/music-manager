@@ -11,10 +11,10 @@ export const filterMusic = musics => term => ({
   musics
 })
 
-export function getActiveEvent() {
+export function getActiveEvent(dispatch) {
   return {
     type: types.GET_EVENT,
-    promise: data.getActiveEvent()
+    promise: data.getActiveEvent(dispatch)
   }
 }
 
@@ -27,14 +27,14 @@ export function favoriteMusic(event, music, user) {
 
 export function addMusic(music) {
   return {
-    type: types.GET_EVENT,
+    type: types.ADD_MUSIC,
     promise: data.add(musicBuilder(music))
   }
 }
 
 export function editMusic(music) {
   return {
-    type: types.GET_EVENT,
+    type: types.UPDATE_MUSIC,
     promise: data.update(musicBuilder(music))
   }
 }

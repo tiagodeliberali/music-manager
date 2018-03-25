@@ -1,5 +1,5 @@
 import { handle } from 'redux-pack'
-import { GET_EVENT, TOGGLE_FAVORITE } from '../constants/ActionTypes'
+import { GET_EVENT, UPDATE_EVENT, TOGGLE_FAVORITE } from '../constants/ActionTypes'
 
 const initialState = {
   isLoading: false,
@@ -17,9 +17,12 @@ export default function activeEvent(state = initialState, action) {
         }),
         finish: prevState => ({ ...prevState, isLoading: false }),
         failure: prevState => ({ ...prevState, error: payload }),
-        success: prevState => Object.assign({}, prevState, payload),
+        success: prevState => prevState,
         always: prevState => prevState
       })
+
+    case UPDATE_EVENT:
+      return payload
 
     case TOGGLE_FAVORITE:
       return handle(state, action, {
@@ -33,6 +36,6 @@ export default function activeEvent(state = initialState, action) {
       })
 
     default:
-      return state;
+      return state
   }
 }

@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => {
   // TODO: Move it to a proper place
   dispatch(actions.login())
   dispatch(actions.loadMusics())
-  dispatch(actions.getActiveEvent())
+  dispatch(actions.getActiveEvent(dispatch))
 
   return {
     onSearch: musics => term => dispatch(actions.filterMusic(musics)(term)),

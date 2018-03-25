@@ -8,4 +8,5 @@ export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE';
 export const LOGIN_USER = 'LOGIN_USER';
 export const GET_MUSICS = 'GET_MUSICS';
 export const GET_EVENT = 'GET_EVENT';
+export const UPDATE_EVENT = 'UPDATE_EVENT';
 

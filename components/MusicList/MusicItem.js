@@ -31,6 +31,19 @@ const styles = theme => ({
   }
 })
 
+class ActiveEvent {
+  constructor(eventMusic) {
+    if (eventMusic && eventMusic.votes)
+      this.votes = eventMusic.votes
+    else
+      this.votes = []
+  }
+
+  countVotes = () => this.votes.length
+  hasVotes = () => this.votes.length > 0
+  votedBy = userId => this.votes.find(item => item === userId) !== undefined
+}
+
 class MusicItem extends Component {
   state = {
     expanded: false,
@@ -38,15 +51,10 @@ class MusicItem extends Component {
   }
 
   handleExpandClick = () => this.setState({ expanded: !this.state.expanded })
-
   firstLines = content => content.substring(0, this.cutPosition(content))
-
   otherLines = content => content.substring(this.cutPosition(content) + 1)
-
   cutPosition = content => content.indexOf('\n', content.indexOf('\n') + 1)
-
   handleMenuClick = event => this.setState({ menuElement: event.currentTarget })
-
   handleMenuClose = () => this.setState({ menuElement: null })
 
   render = () => {
@@ -61,7 +69,8 @@ class MusicItem extends Component {
 
     let eventDetails = {}
     if (event)
-      eventDetails = event.getDetails(music.id)
+      eventDetails =
+        new ActiveEvent((event.musics || []).find(eventMusic => eventMusic.id === music.id))
 
     const eventEnabled = event && user && user.canVote()
 

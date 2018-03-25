@@ -96,7 +96,7 @@ class AddMusic extends Component {
       <div>
         <EditButton editMode={this.editMode()} onOpen={this.handleClickOpen} />
         <Dialog
-          open={this.state.open}
+          open={this.state.open || false}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">{this.editMode() ? "Editar música" : "Nova música"}</DialogTitle>

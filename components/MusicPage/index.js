@@ -11,7 +11,10 @@ const MusicPage = ({
   if (!user)
     return <div>Carregando...</div>
 
-  if (user && !user.canRead())
+  if (user.isLoading)
+    return <div>Carregando usuário...</div>
+
+  if (!user.canRead())
     return <div>Você não tem acesso a esse sistema</div>
 
   return (

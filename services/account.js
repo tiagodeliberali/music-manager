@@ -8,7 +8,7 @@ const buildUser = (user, dbUser) => {
   )
 
   result.canEdit = () => dbUser && (dbUser.admin || dbUser.author)
-  result.canRead = () => !!dbUser // && (dbUser.admin || dbUser.author || dbUser.reader)
+  result.canRead = () => dbUser && (dbUser.admin || dbUser.author || dbUser.reader)
   result.canVote = () => dbUser && (dbUser.admin || dbUser.author || dbUser.reader)
 
   return result

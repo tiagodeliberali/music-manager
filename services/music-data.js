@@ -105,7 +105,7 @@ class MusicData {
         photoURL,
         admin: false,
         author: false,
-        reader: false
+        reader: true // TODO: move back to false
       }
 
       await this.userCollection.doc(email).set(user)

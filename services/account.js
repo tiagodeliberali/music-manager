@@ -19,15 +19,29 @@ export default async (db) => {
     const provider = new firebase.auth.FacebookAuthProvider();
     firebase.auth().languageCode = 'pt_BR';
 
-    const { user } = await firebase.auth().signInWithPopup(provider)
-    const dbUser = await db.getUser(user.email)
+    let facebookUser = {}
 
-    if (!dbUser) {
-      const newDbUser = await db.addUser(user.email, user.displayName, user.photoURL)
-      return buildUser(user, newDbUser)
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+      const result = await firebase.auth().signInWithPopup(provider)
+      facebookUser = result.user
+    } else {
+      const result = await firebase.auth().getRedirectResult()
+      if (!result.user)
+        firebase.auth().signInWithRedirect(provider)
+
+      facebookUser = result.user
     }
 
-    return buildUser(user, dbUser)
+    const dbUser = await db.getUser(facebookUser.email)
+
+    if (!dbUser) {
+      const newDbUser =
+        await db.addUser(facebookUser.email, facebookUser.displayName, facebookUser.photoURL)
+
+      return buildUser(facebookUser, newDbUser)
+    }
+
+    return buildUser(facebookUser, dbUser)
   } catch (error) {
     console.log(error)
   }

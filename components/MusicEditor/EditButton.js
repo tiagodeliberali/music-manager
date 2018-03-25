@@ -6,7 +6,7 @@ import { withStyles } from 'material-ui/styles';
 
 const styles = () => ({
   button: {
-    marginLeft: 50
+    marginLeft: 5
   }
 });
 

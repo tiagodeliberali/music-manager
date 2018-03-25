@@ -1,14 +1,13 @@
 import React from 'react';
 import * as PropTypes from "prop-types";
 import { withStyles } from 'material-ui/styles';
-import { AppBar, IconButton, Toolbar, Avatar } from 'material-ui';
-import { LibraryMusic } from 'material-ui-icons';
+import { AppBar, Toolbar, Avatar } from 'material-ui';
 import SearchBar from './SearchBar';
 import MusicEditor from '../MusicEditor'
 
 const styles = () => ({
   button: {
-    marginLeft: 30,
+    marginLeft: 5,
     marginRigth: 5
   }
 });
@@ -24,9 +23,6 @@ function Header({
     <header className="header">
       <AppBar position="static" color="default">
         <Toolbar>
-          <IconButton color="inherit" aria-label="Menu">
-            <LibraryMusic />
-          </IconButton>
           <SearchBar onSearch={onSearch} />
           {editMusic}
           <Avatar className={classes.button} alt={user.displayName} src={user.photoURL} />

@@ -24,7 +24,8 @@ const MusicPage = ({
           <Header
             onSave={onAddMusic}
             onSearch={onSearch(musics.list)}
-            user={user} />
+            user={user}
+            event={activeEvent} />
           <MusicList
             musics={filteredMusics}
             onSave={onUpdateMusic}

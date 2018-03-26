@@ -1,40 +1,20 @@
 import React from 'react';
 import * as PropTypes from "prop-types";
-import { Add } from 'material-ui-icons';
-import { Button, Tooltip } from 'material-ui';
-import { withStyles } from 'material-ui/styles';
+import { Button } from 'material-ui';
 
-const styles = () => ({
-  button: {
-    marginLeft: 5
-  }
-});
-
-function EditButton({ editMode, onOpen, classes }) {
-  return (editMode
-    ? (<Button
-        mini
-        aria-haspopup="true"
-        color="inherit"
-        onClick={onOpen}>
-        Editar
-    </Button>)
-    : (<Tooltip id="tooltip-icon" title="Adicionar música">
-        <Button className={classes.button}
-            variant="fab"
-            mini
-            aria-haspopup="true"
-            color="inherit"
-            onClick={onOpen}>
-            <Add />
-        </Button>
-    </Tooltip>))
+function EditButton({ editMode, onOpen }) {
+  return (<Button
+    mini
+    aria-haspopup="true"
+    color="inherit"
+    onClick={onOpen}>
+    {editMode ? "Editar" : "Nova música"}
+  </Button>)
 }
 
 EditButton.propTypes = {
   editMode: PropTypes.bool.isRequired,
-  onOpen: PropTypes.func.isRequired,
-  classes: PropTypes.object.isRequired
+  onOpen: PropTypes.func.isRequired
 }
 
-export default withStyles(styles)(EditButton);
+export default EditButton;

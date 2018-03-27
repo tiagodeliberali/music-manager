@@ -4,6 +4,7 @@ export const FILTER_MUSIC = 'FILTER_MUSIC'
 /* ASYNC FUNCTIONS */
 export const ADD_MUSIC = 'ADD_MUSIC'
 export const UPDATE_MUSIC = 'UPDATE_MUSIC'
+export const SET_EXECUTED_MUSIC = 'SET_EXECUTED_MUSIC'
 export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE'
 export const LOGIN_USER = 'LOGIN_USER'
 export const GET_MUSICS = 'GET_MUSICS'

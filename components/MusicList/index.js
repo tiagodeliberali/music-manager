@@ -15,7 +15,7 @@ const MusicList = ({
   /* eslint-disable react/prop-types */
   event,
   /* eslint-disable react/prop-types */
-  onSave, onVote
+  onSave, onVote, onExecuted
 }) => {
   if (!musics || musics.length === 0)
     return <div>Carregando...</div>;
@@ -26,6 +26,7 @@ const MusicList = ({
                 music={music}
                 onSave={onSave}
                 onVote={onVote}
+                onExecuted={onExecuted}
                 user={user}
                 event={event} />
   ));
@@ -42,6 +43,7 @@ MusicList.propTypes = {
   musics: PropTypes.array.isRequired,
   onVote: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  onExecuted: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired
 }
 

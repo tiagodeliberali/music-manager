@@ -6,7 +6,13 @@ import Header from '../Header'
 import MusicList from '../MusicList'
 
 const MusicPage = ({
-  musics, filteredMusics, user, activeEvent, onSearch, onAddMusic, onUpdateMusic, onVote
+  musics,
+  filteredMusics,
+  user, activeEvent,
+  onSearch, onAddMusic,
+  onUpdateMusic,
+  onVote,
+  onExecuted
 }) => {
   if (!user)
     return <div>Carregando...</div>
@@ -30,6 +36,7 @@ const MusicPage = ({
             musics={filteredMusics}
             onSave={onUpdateMusic}
             onVote={onVote}
+            onExecuted={onExecuted}
             user={user}
             event={activeEvent} />
         </div>
@@ -43,6 +50,7 @@ MusicPage.propTypes = {
   onAddMusic: PropTypes.func.isRequired,
   onUpdateMusic: PropTypes.func.isRequired,
   onVote: PropTypes.func.isRequired,
+  onExecuted: PropTypes.func.isRequired,
   musics: PropTypes.object.isRequired,
   filteredMusics: PropTypes.array.isRequired,
   user: PropTypes.object.isRequired,

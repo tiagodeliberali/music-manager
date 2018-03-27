@@ -19,7 +19,8 @@ const mapDispatchToProps = (dispatch) => {
     onSearch: musics => term => dispatch(actions.filterMusic(musics)(term)),
     onAddMusic: music => dispatch(actions.addMusic(music)),
     onUpdateMusic: music => dispatch(actions.editMusic(music)),
-    onVote: (event, music, user) => dispatch(actions.favoriteMusic(event, music, user))
+    onVote: (event, music, user) => dispatch(actions.favoriteMusic(event, music, user)),
+    onExecuted: (music, event) => dispatch(actions.toggleExecuted(music, event))
   }
 }
 

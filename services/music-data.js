@@ -145,6 +145,26 @@ class MusicData {
       console.log(err)
     }
   }
+
+  toggleExecuted = async (music, event) => {
+    try {
+      let musicExecuted
+      if (!music.executedAt)
+        musicExecuted = { ...music, executedAt: [event.id] }
+      else if (!music.executedAt.find(executed => executed === event.id))
+        musicExecuted = { ...music, executedAt: music.executedAt.concat(event.id) }
+      else
+        musicExecuted = {
+          ...music,
+          executedAt: music.executedAt.filter(executed => executed !== event.id)
+        }
+
+      await this.musicCollection.doc(music.id).set(musicExecuted)
+      return Object.assign({}, music)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 
 export default MusicData

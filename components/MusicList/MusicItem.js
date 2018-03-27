@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles'
 import Card, { CardActions, CardContent } from 'material-ui/Card'
 import Menu, { MenuItem } from 'material-ui/Menu';
 import { Typography, IconButton, Collapse, CardHeader, Badge } from 'material-ui'
-import { Favorite, Layers, LayersClear, ExpandMore, MoreVert, Whatshot } from 'material-ui-icons'
+import { Favorite, Layers, LayersClear, ExpandMore, MoreVert, Whatshot, MusicNote } from 'material-ui-icons'
 import classnames from 'classnames'
 import MusicEditor from '../MusicEditor'
 
@@ -57,9 +57,12 @@ class MusicItem extends Component {
   handleMenuClick = event => this.setState({ menuElement: event.currentTarget })
   handleMenuClose = () => this.setState({ menuElement: null })
 
+  isExecuted = (music, event) =>
+    music.executedAt && music.executedAt.find(executed => executed === event.id)
+
   render = () => {
     const {
-      classes, onSave, onVote, user,
+      classes, onSave, onVote, onExecuted, user,
       /* eslint-disable react/prop-types */
       event,
       /* eslint-disable react/prop-types */
@@ -87,8 +90,7 @@ class MusicItem extends Component {
           id="simple-menu"
           anchorEl={menuElement}
           open={Boolean(menuElement)}
-          onClose={this.handleMenuClose}
-        >
+          onClose={this.handleMenuClose}>
           <MenuItem>
             <MusicEditor
               onSave={onSave}
@@ -104,7 +106,7 @@ class MusicItem extends Component {
           <CardHeader
             action={editMusic}
             title={music.name}
-          subheader={ `Tocada ${music.times || 0} vezes` } />
+            subheader={`Tocada ${(music.executedAt || []).length} vezes`} />
           <CardContent className={classes.cardContent}>
             <Typography variant="headline" component="h2">
             </Typography>
@@ -129,14 +131,18 @@ class MusicItem extends Component {
             {eventEnabled && eventDetails.hasVotes() && <Badge className={classes.margin} badgeContent={eventDetails.countVotes()} color="primary">
               <Whatshot color="secondary" />
             </Badge>}
+            {user && user.isAdmin() && (<IconButton>
+              {this.isExecuted(music, event)
+              ? <MusicNote onClick={() => onExecuted(music, event)} color="primary" />
+              : <MusicNote onClick={() => onExecuted(music, event)} />}
+            </IconButton>)}
             <IconButton
               className={classnames(classes.expand, {
                 [classes.expandOpen]: this.state.expanded
               })}
               onClick={this.handleExpandClick}
               aria-expanded={this.state.expanded}
-              aria-label="Mostrar tudo"
-            >
+              aria-label="Mostrar tudo">
               <ExpandMore />
             </IconButton>
           </CardActions>
@@ -151,6 +157,7 @@ MusicItem.propTypes = {
   music: PropTypes.object.isRequired,
   onVote: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  onExecuted: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired
 }
 

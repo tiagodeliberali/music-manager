@@ -4,7 +4,8 @@ export default (music) => {
     name: music.name,
     lyrics: music.lyrics,
     youtube: music.youtube,
-    hasTransparency: music.hasTransparency
+    hasTransparency: music.hasTransparency,
+    executedAt: music.executedAt || []
   }
 
   if (!result.id)

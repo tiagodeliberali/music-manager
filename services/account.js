@@ -7,6 +7,7 @@ const buildUser = (user, dbUser) => {
     { displayName: user.displayName, photoURL: user.photoURL }
   )
 
+  result.isAdmin = () => dbUser && dbUser.admin
   result.canEdit = () => dbUser && (dbUser.admin || dbUser.author)
   result.canRead = () => dbUser && (dbUser.admin || dbUser.author || dbUser.reader)
   result.canVote = () => dbUser && (dbUser.admin || dbUser.author || dbUser.reader)

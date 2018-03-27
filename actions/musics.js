@@ -39,6 +39,13 @@ export function editMusic(music) {
   }
 }
 
+export function toggleExecuted(music, event) {
+  return {
+    type: types.SET_EXECUTED_MUSIC,
+    promise: data.toggleExecuted(musicBuilder(music), event)
+  }
+}
+
 export function loadMusics(dispatch) {
   return {
     type: types.GET_MUSICS,

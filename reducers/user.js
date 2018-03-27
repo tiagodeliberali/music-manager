@@ -6,6 +6,7 @@ const initialState = {
   error: null
 }
 
+initialState.isAdmin = () => false
 initialState.canEdit = () => false
 initialState.canRead = () => false
 initialState.canVote = () => false

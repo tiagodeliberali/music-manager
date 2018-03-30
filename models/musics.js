@@ -1,13 +1,5 @@
 import musicBuilder from '../services/music-builder'
 
-/* start: prevState => ({
-    ...prevState, isLoading: true, error: null
-  }),
-  finish: prevState => ({ ...prevState, isLoading: false }),
-  failure: prevState => ({ ...prevState, error: payload }),
-  success: prevState => Object.assign({}, prevState, payload),
-  always: prevState => prevState */
-
 const musics = {
   state: {
     isLoading: false,
@@ -16,6 +8,9 @@ const musics = {
   reducers: {
     updateMusic(state, payload) {
       return Object.assign({}, state, { list: payload })
+    },
+    setAsyncInfo(state, payload) {
+      return Object.assign({}, state, payload)
     }
   },
   effects: {
@@ -29,7 +24,13 @@ const musics = {
       await payload.data.toggleExecuted(musicBuilder(payload.music), payload.event)
     },
     async loadMusics(payload) {
-      await payload.data.get(this.updateMusic, payload.filterMusics)
+      try {
+        this.setAsyncInfo({ isLoading: true, error: null })
+        await payload.data.get(this.updateMusic, payload.filterMusics)
+        this.setAsyncInfo({ isLoading: false, error: null })
+      } catch (err) {
+        this.setAsyncInfo({ isLoading: false, error: err })
+      }
     }
   }
 }

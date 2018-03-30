@@ -1,13 +1,5 @@
 import getUser from '../services/account'
 
-/* start: prevState => ({
-    ...prevState, isLoading: true, error: null
-  }),
-  finish: prevState => ({ ...prevState, isLoading: false }),
-  failure: prevState => ({ ...prevState, error: payload }),
-  success: prevState => Object.assign({}, prevState, payload),
-  always: prevState => prevState */
-
 const user = {
   state: {
     isLoading: false,
@@ -24,8 +16,13 @@ const user = {
   },
   effects: {
     async getUser(payload) {
-      const user = await getUser(payload)
-      this.updateUser(user)
+      try {
+        this.updateUser({ isLoading: true, error: null })
+        const user = await getUser(payload)
+        this.updateUser({ ...user, isLoading: false, error: null })
+      } catch (err) {
+        this.updateUser({ isLoading: false, error: err })
+      }
     }
   }
 }

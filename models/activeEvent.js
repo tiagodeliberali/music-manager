@@ -1,11 +1,3 @@
-/* start: prevState => ({
-    ...prevState, isLoading: true, error: null
-  }),
-  finish: prevState => ({ ...prevState, isLoading: false }),
-  failure: prevState => ({ ...prevState, error: payload }),
-  success: prevState => prevState,
-  always: prevState => prevState */
-
 const activeEvent = {
   state: {
     isLoading: false,
@@ -18,7 +10,13 @@ const activeEvent = {
   },
   effects: {
     async getActiveEvent(payload) {
-      await payload.data.getActiveEvent(payload.snapshotUpdate)
+      try {
+        this.snapshotUpdate({ isLoading: true, error: null })
+        await payload.data.getActiveEvent(payload.snapshotUpdate)
+        this.snapshotUpdate({ isLoading: false, error: null })
+      } catch (err) {
+        this.snapshotUpdate({ isLoading: false, error: err })
+      }
     },
     async favoriteMusic(payload) {
       await payload.data.favoriteMusic(payload.event, payload.music, payload.user)

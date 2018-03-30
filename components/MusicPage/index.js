@@ -33,7 +33,7 @@ const MusicPage = ({
             user={user}
             event={activeEvent} />
           <MusicList
-            musics={filteredMusics}
+            musics={filteredMusics.musics}
             onSave={onUpdateMusic}
             onVote={onVote}
             onExecuted={onExecuted}
@@ -52,7 +52,7 @@ MusicPage.propTypes = {
   onVote: PropTypes.func.isRequired,
   onExecuted: PropTypes.func.isRequired,
   musics: PropTypes.object.isRequired,
-  filteredMusics: PropTypes.array.isRequired,
+  filteredMusics: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   activeEvent: PropTypes.object.isRequired
 }

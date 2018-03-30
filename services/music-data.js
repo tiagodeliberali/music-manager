@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import { SNAPSHOT_EVENT, FILTER_MUSIC, SNAPSHOT_MUSICS } from '../constants/ActionTypes'
 
 require('firebase/firestore')
 
@@ -21,7 +20,7 @@ class MusicData {
     this.eventCollection = this.db.collection('events')
   }
 
-  getActiveEvent = async (dispatch) => {
+  getActiveEvent = async (snapshotUpdate) => {
     try {
       const events = await this.eventCollection.get()
       const result = []
@@ -37,16 +36,16 @@ class MusicData {
         .collection('musics')
         .onSnapshot(async (musicList) => {
           const currentEvent = { id: activeEvent.id }
-          currentEvent.musics = this.getMusicsFromEvent(musicList)
+          currentEvent.musics = this.buildMusicList(musicList)
 
-          dispatch({ type: SNAPSHOT_EVENT, payload: currentEvent });
+          snapshotUpdate(currentEvent)
         })
     } catch (err) {
       console.log(err)
     }
   }
 
-  getMusicsFromEvent = (musicList) => {
+  buildMusicList = (musicList) => {
     try {
       const result = []
 
@@ -115,13 +114,13 @@ class MusicData {
     }
   }
 
-  get = async (dispatch) => {
+  get = async (updateMusic, filterMusic) => {
     try {
       this.musicCollection.onSnapshot(async (musicList) => {
-        const musics = this.getMusicsFromEvent(musicList)
+        const musics = this.buildMusicList(musicList)
 
-        dispatch({ type: SNAPSHOT_MUSICS, payload: musics })
-        dispatch({ type: FILTER_MUSIC, musics })
+        updateMusic(musics)
+        filterMusic({ musics })
       })
     } catch (err) {
       console.log(err)

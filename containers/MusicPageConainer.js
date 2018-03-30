@@ -1,6 +1,8 @@
 import { connect } from 'react-redux'
-import * as actions from '../actions/musics'
 import MusicPage from '../components/MusicPage'
+import MusicData from '../services/music-data'
+
+const data = new MusicData()
 
 const mapStateToProps = state => ({
   musics: state.musics,
@@ -9,18 +11,27 @@ const mapStateToProps = state => ({
   activeEvent: state.activeEvent
 })
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = ({
+  activeEvent: { getActiveEvent, favoriteMusic, snapshotUpdate },
+  filteredMusics: { filterMusics },
+  user: { getUser },
+  musics: {
+    addMusic, editMusic, toggleExecuted, loadMusics
+  }
+}) => {
   // TODO: Move it to a proper place
-  dispatch(actions.login())
-  dispatch(actions.loadMusics(dispatch))
-  dispatch(actions.getActiveEvent(dispatch))
+  getUser(data)
+  loadMusics({ data, filterMusics })
+  getActiveEvent({ data, snapshotUpdate })
 
   return {
-    onSearch: musics => term => dispatch(actions.filterMusic(musics)(term)),
-    onAddMusic: music => dispatch(actions.addMusic(music)),
-    onUpdateMusic: music => dispatch(actions.editMusic(music)),
-    onVote: (event, music, user) => dispatch(actions.favoriteMusic(event, music, user)),
-    onExecuted: (music, event) => dispatch(actions.toggleExecuted(music, event))
+    onSearch: musics => term => filterMusics({ data, term, musics }),
+    onAddMusic: music => addMusic({ data, music }),
+    onUpdateMusic: music => editMusic({ data, music }),
+    onExecuted: (music, event) => toggleExecuted({ data, music, event }),
+    onVote: (event, music, user) => favoriteMusic({
+      data, event, music, user
+    })
   }
 }
 

@@ -50,6 +50,7 @@
     "webpack-hot-middleware": "^2.12.2"
   },
   "dependencies": {
+    "@rematch/core": "^0.6.0",
     "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
     "fbjs": "^0.8.5",

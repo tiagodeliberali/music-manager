@@ -1,16 +1,18 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import injectTapEventPlugin from "react-tap-event-plugin";
-import { Provider } from 'react-redux';
-
-import App from '../components/App';
-import configureStore from '../store/configureStore';
+import ReactDOM from "react-dom"
+import injectTapEventPlugin from "react-tap-event-plugin"
+import { Provider } from 'react-redux'
+import { init } from '@rematch/core'
+import App from '../components/App'
+import * as models from '../models'
 
 window.React = React;
 
 injectTapEventPlugin();
 
-const store = configureStore();
+const store = init({
+  models
+})
 
 ReactDOM.render(
   <Provider store={store}>

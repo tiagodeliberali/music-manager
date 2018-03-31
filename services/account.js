@@ -1,4 +1,7 @@
 import firebase from 'firebase'
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 const buildUser = (user, dbUser) => {
   const result = Object.assign(
@@ -15,22 +18,33 @@ const buildUser = (user, dbUser) => {
   return result
 }
 
+const getFacebookUser = async () => {
+  let facebookUser = {}
+
+  const provider = new firebase.auth.FacebookAuthProvider();
+  firebase.auth().languageCode = 'pt_BR';
+
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    const result = await firebase.auth().signInWithPopup(provider)
+    facebookUser = result.user
+  } else {
+    const result = await firebase.auth().getRedirectResult()
+    if (!result.user)
+      firebase.auth().signInWithRedirect(provider)
+
+    facebookUser = result.user
+  }
+
+  return facebookUser
+}
+
 export default async (db) => {
   try {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().languageCode = 'pt_BR';
+    let facebookUser = cookies.get('facebookUser')
 
-    let facebookUser = {}
-
-    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-      const result = await firebase.auth().signInWithPopup(provider)
-      facebookUser = result.user
-    } else {
-      const result = await firebase.auth().getRedirectResult()
-      if (!result.user)
-        firebase.auth().signInWithRedirect(provider)
-
-      facebookUser = result.user
+    if (!facebookUser || !facebookUser.email) {
+      facebookUser = await getFacebookUser()
+      cookies.set('facebookUser', facebookUser)
     }
 
     const dbUser = await db.getUser(facebookUser.email)

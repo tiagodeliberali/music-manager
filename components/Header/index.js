@@ -50,19 +50,20 @@ class Header extends Component {
       )
 
     const eventMusics = []
-    const musicList = event.musics
-    musicList.sort((a, b) => b.votes.length - a.votes.length)
-    if (event)
-      musicList.forEach((music) => {
-        if (music.votes && music.votes.length > 0)
-          eventMusics.push(<ListItem key={music.id} >
-            <ListItemIcon>
-              <Whatshot />
-            </ListItemIcon>
-            <ListItemText primary={music.name} secondary={`Votada ${music.votes.length} vezes`} />
-          </ListItem>)
-      })
-
+    if (event.musics) {
+      const musicList = event.musics
+      musicList.sort((a, b) => b.votes.length - a.votes.length)
+      if (event)
+        musicList.forEach((music) => {
+          if (music.votes && music.votes.length > 0)
+            eventMusics.push(<ListItem key={music.id} >
+              <ListItemIcon>
+                <Whatshot />
+              </ListItemIcon>
+              <ListItemText primary={music.name} secondary={`Votada ${music.votes.length} vezes`} />
+            </ListItem>)
+        })
+    }
 
     return (
       <div>
